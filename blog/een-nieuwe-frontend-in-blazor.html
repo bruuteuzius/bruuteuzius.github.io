@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/">
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+
+                    colors: {
+                        primary: tailwind.colors.blue
+                    },
+                },},
+                }
+    </script>
+
+
+    </head>
+
+<body class="bg-gray-950 font-sans text-gray-200"><div class="mx-auto max-w-3xl px-4 sm:px-6 xl:max-w-5xl xl:px-0 "><div class="flex h-screen flex-col justify-between"><header class="flex items-center justify-between py-10"><div><a href><div class="flex items-center justify-between"><div class=" h-6 text-2xl font-semibold sm:block text-primary-800">Bruuteuzius Blogged</div></div></a></div>
+    <div class="flex items-center space-x-4 leading-5 sm:space-x-6"><a href="" class="hidden font-medium text-gray-100 sm:block">Home
+                </a><a href="tags" class="hidden font-medium text-gray-100 sm:block">Tags
+                </a><a href="https://github.com/bruuteuzius/bruuteuzius" class="hidden font-medium text-gray-100 sm:block">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="hover:text-primary-400 h-6 w-6 fill-current text-gray-200"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg></a><button id="toggle-button" aria-label="Toggle Menu" class="sm:hidden"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-8 w-8 text-gray-100"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg></button>
+        <div id="mobile-menu" class="fixed left-0 top-0 z-10 h-full w-full translate-x-full transform   duration-300 ease-in-out bg-gray-950 opacity-[0.98]"><div class="flex justify-end"><button id="close-mobile-menu-button" class="mr-8 mt-11 h-8 w-8" aria-label="Toggle Menu"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-gray-100"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></button></div>
+            <nav class="fixed mt-8 h-full"><div class="px-12 py-4"><a href="" class="text-2xl font-bold tracking-widest text-gray-100">Home
+                            </a></div><div class="px-12 py-4"><a href="tags" class="text-2xl font-bold tracking-widest text-gray-100">Tags
+                            </a></div><div class="px-12 py-4"><a href="https://github.com/bruuteuzius/bruuteuzius" class="text-2xl font-bold tracking-widest text-gray-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="hover:text-primary-400 h-6 w-6 fill-current text-gray-200"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg></a></div></nav></div></div></header>
+<script>
+//👎 but what can I do? It's a static html. I can't use C# here.
+ const toggleMobileMenu = () => document.querySelector('#mobile-menu').classList.toggle('translate-x-full');
+ 
+ document.querySelector('#toggle-button').addEventListener('click', toggleMobileMenu);
+ document.querySelector('#close-mobile-menu-button').addEventListener('click', toggleMobileMenu);
+</script>
+
+        <main class="mb-auto"><article><div class="xl:divide-y  xl:divide-gray-700"><header class="pt-6 xl:pb-6"><div class="space-y-1 text-center"><dl class="space-y-10"><div><dt class="sr-only">Published on</dt>
+                        <dd class="text-base font-medium leading-6 text-gray-400"><time datetime="2021-02-06T00:00:00.000">February 6, 2021</time></dd></div></dl>
+                <div class="prose prose-invert mx-auto"><h1 class>een nieuwe frontend in blazor</h1></div></div></header>
+        <div class="grid-rows-[auto_1fr] divide-y  pb-8 divide-gray-700 xl:grid xl:grid-cols-4 xl:gap-x-6 xl:divide-y-0"><dl class="pb-10 pt-6 xl:border-b  xl:pt-11 xl:border-gray-700"><dt class="sr-only">Authors</dt>
+                <dd><ul class="flex flex-wrap justify-center gap-4 sm:space-x-12 xl:block xl:space-x-0 xl:space-y-8"><li class="flex items-center space-x-2"><dl class="whitespace-nowrap text-sm font-medium leading-5"><dt class="sr-only">Name</dt>
+                                        <dd class="text-gray-900 dark:text-gray-100 flex gap-1 items-center">bruuteuzius<a target="_blank" rel="noopener noreferrer" href="https://github.com/bruuteuzius" class="flex gap-1 items-center text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="hover:text-primary-400 w-4 h-4 fill-current text-gray-200"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg></a></dd></dl></li></ul></dd></dl>
+            <div class="divide-y  divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0"><div class="prose prose-invert max-w-none pb-8 pt-10"><p>Momenteel ben ik bezig om de frontend van de volleybal app om te smurfen naar (serverside) <a href="https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor">Blazor</a>. Want stiekem vind ik het best wel prettig dat ik geen javascript meer hoef te typen en dankzij gratis UI componenten (zoals <a href="https://razor.radzen.com/">Radzen</a>) hoef ik me ook niet bezig te houden met lastige frontend magic 😜</p>
+<p>Niet dat ik met de vorige frontend druk was... Gewoon de standaard bootstrap schil :</p>
+<ul>
+<li><p><img src="Content/Blog/media/home-oud.png" alt="" /></p>
+</li>
+<li><p><img src="Content/Blog/media/wedstrijden-oud.png" alt="" /></p>
+</li>
+</ul>
+<p>Dus echt aantrekkelijk is het allemaal niet, maar wel enigszins functioneel.</p>
+<p>De Blazor standaard OOTB-frontend ziet er een stuk mooier uit vind ik. En de <a href="https://razor.radzen.com/">Radzen</a> componenten zoals het grid en de modal dialog en de material design icons zijn ook feest :</p>
+<ul>
+<li><p><img src="Content/Blog/media/home-nieuw.png" alt="" /></p>
+</li>
+<li><p><img src="Content/Blog/media/wedstrijden-nieuw.png" alt="" /></p>
+</li>
+</ul>
+<p>Zoals je ziet een stuk gebruiksvriendelijker. Handig ook dat je in de grids kan zoeken met filters.</p>
+<p>Modal dialog</p>
+<p>Eigenlijk heb ik een hekel aan modal dialogs in een desktop applicatie, maar in een webzijde vind ik dat nogal prettig. Radzen heeft een dialogservice waar je gebruik van kan maken. Je inject in feite het dialog-component in je main layout. Zo gebruik ik een dialog om records te kunnen verwijderen. De DialogService moet je in de startup registeren :</p>
+<pre><code>services.AddScoped&lt;DialogService&gt;();
+</code></pre>
+<p>Vervolgens moet de dialog component nog in de body van MainLayout.razor :</p>
+<pre><code>&lt;div class=&quot;content px-4&quot;&gt;
+    &lt;RadzenDialog /&gt;
+    @Body
+&lt;/div&gt;
+</code></pre>
+<p>Op de grid voeg ik dit toe :</p>
+<pre><code>AdditionalSourceCodePages=&quot;@(new List&lt;string&gt;() { &quot;DeleteDialog.razor&quot; })&quot;
+</code></pre>
+<p>Op de pagina met de grid heb ik een delete knop met achterliggende functie. In die Delete functie doe ik :</p>
+<pre><code>bool verwijderd = await dialogService.OpenAsync&lt;DeleteDialog&gt;($&quot;Lid {model.Id}&quot;, new Dictionary&lt;string, object&gt;() { { &quot;Id&quot;, model.Id },{ &quot;Entiteit&quot;, &quot;Lid&quot; } });
+</code></pre>
+<p>Ik open de dialogservice met mijn DeleteDialog-component, geef de Id en entiteitnaam mee en in de DeleteDialog verwijder ik die entiteit met dat id. De dialog heeft een controle vraag en een Ok en Annuleer-knop :</p>
+<pre><code>@inject DeleteService deleteService
+@inject Radzen.DialogService dialogService
+
+&lt;RadzenCard Style=&quot;padding: 20px;&quot;&gt;
+    &lt;p Style=&quot;margin-bottom: 10px;&quot;&gt;Zeker weten dat je deze @(Entiteit) met id @(Id) wil verwijderen?&lt;/p&gt;
+    &lt;div class=&quot;row&quot;&gt;
+        &lt;RadzenButton Text=&quot;Ok&quot; Click=&quot;()=&gt; dialogService.Close(true)&quot; Style=&quot;margin: 10px; width: 150px&quot; /&gt;
+        &lt;RadzenButton Text=&quot;Annuleer&quot; Click=&quot;()=&gt; dialogService.Close(false)&quot; ButtonStyle=&quot;ButtonStyle.Secondary&quot;  Style=&quot;margin: 10px; width: 150px&quot;/&gt;
+    &lt;/div&gt;
+&lt;/RadzenCard&gt;
+</code></pre>
+<p>En de init van deze dialog-pagina koppelt het openen en sluiten van de dialoog aan een functie :</p>
+<pre><code>protected override async Task OnInitializedAsync()
+{
+    dialogService.OnOpen += VerwijderDialoogOpen;
+    dialogService.OnClose += VerwijderDialoogSluit;
+}
+</code></pre>
+<p>De VerwijderDialoogSluit roept voor een Entiteit met Id de deleteService aan om het object daadwerkelijk te verwijderen. Wanneer het record verwijderd is, kun je het record uit het grid verwijderen en reloaden. Dit alles zonder refresh van de pagina. Met C#! Zonder javascript te typen! Hoe vet!</p>
+<p><img src="Content/Blog/media/afbeelding.png" alt="" /></p>
+<p>Bestand downloaden</p>
+<p>Wat ik maar niet voor elkaar kreeg was het downloaden van de csv die bij een seizoensplanning hoort. Er is zoals bij het oldscool MVC geen ActionResult waarmee je een file kan returnen. De way to go is een controller maken, speciaal voor het downloaden van bestanden naar de browser. Na een paar keer tegen een muur aangelopen en het ontbreken van de kennis om dit te fixen, heb ik de weg van de minste weerstand gekozen en dit component gebruikt : <a href="https://github.com/StefH/Blazor.DownloadFileFast">https://github.com/StefH/Blazor.DownloadFileFast</a></p>
+<p>In plaats van een lastige constructie met een NavigationManager en redirecten naar een GET op de speciale downloadcontroller, hoef ik nu alleen maar dit te doen :</p>
+<pre><code>BlazorDownloadFileService.DownloadFileAsync($&quot;wedstrijdplanning{model.Seizoen}-versie{model.Versie}.csv&quot;, model.Csv);
+</code></pre>
+<p>Et voila : een csv met daarin de wedstrijdplanning downloaden is een koekie :</p>
+<p><img src="Content/Blog/media/afbeelding-1.png" alt="" /></p>
+<p>Had ik al gezegd dat ik 0 javascript hoef te typen? Nee? Ha! Met c#! Hoe vet!</p>
+</div>
+                <div class="pb-6 pt-6 text-sm text-gray-300"><a target="_blank" rel="noopener noreferrer" href="https://github.com/bruuteuzius/bruuteuzius/tree/main/Content/Blog/een-nieuwe-frontend-in-blazor">View on GitHub</a></div></div>
+            <footer><div class=" text-sm font-medium leading-5 divide-gray-700 xl:col-start-1 xl:row-start-2 xl:divide-y"><div class="py-4 xl:py-8"><h2 class="text-xs uppercase tracking-wide text-gray-400">Tags</h2>
+                        <div class="flex flex-wrap"><a class="text-primary-500 hover:text-primary-400 mr-3 text-sm font-medium uppercase" href="tags/code">code</a></div></div></div>
+                <div class="pt-4 xl:pt-8"><a class="text-primary-500 hover:text-primary-400" aria-label="Back to the home" href>← Back to the home</a></div></footer></div></div></article></main>
+
+        <footer><div class="mt-16 flex flex-col items-center"><div class="mb-3 flex space-x-4"><a class="text-sm text-gray-500 transition hover:text-gray-600" target="_blank" rel="noopener noreferrer" href="https://github.com/bruuteuzius/bruuteuzius"><span class="sr-only">github</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="hover:text-primary-400 h-6 w-6 fill-current text-gray-200"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg></a>
+                    <a class="text-sm text-gray-500 transition hover:text-gray-600" target="_blank" rel="noopener noreferrer" href="https://x.com/"><span class="sr-only">x</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" class="hover:text-primary-400 h-6 w-6 fill-current text-gray-200"><path d="M 5.9199219 6 L 20.582031 27.375 L 6.2304688 44 L 9.4101562 44 L 21.986328 29.421875 L 31.986328 44 L 44 44 L 28.681641 21.669922 L 42.199219 6 L 39.029297 6 L 27.275391 19.617188 L 17.933594 6 L 5.9199219 6 z M 9.7167969 8 L 16.880859 8 L 40.203125 42 L 33.039062 42 L 9.7167969 8 z"></path></svg></a></div>
+                <div class="mb-2 flex space-x-2 text-sm text-gray-400"><a target="_blank" rel="noopener noreferrer" href="https://github.com/BlazorStatic/BlazorStatic"> Built with Blazor Static</a>
+                    <div>•</div>
+                    <div>© 2025</div></div></div></footer></div></div>
+        <blazor-focus-on-navigate selector="h1"></blazor-focus-on-navigate></body></html>
