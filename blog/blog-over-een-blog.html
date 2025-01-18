@@ -44,18 +44,13 @@
                                         <dd class="text-gray-900 dark:text-gray-100 flex gap-1 items-center">bruuteuzius<a target="_blank" rel="noopener noreferrer" href="https://github.com/bruuteuzius" class="flex gap-1 items-center text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="hover:text-primary-400 w-4 h-4 fill-current text-gray-200"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg></a></dd></dl></li></ul></dd></dl>
             <div class="divide-y  divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0"><div class="prose prose-invert max-w-none pb-8 pt-10"><p>Deze blogpost is een test om te kijken of het lukt om met een commit van een md file op deze repo, een html gedeployed wordt als github page.
 Zoals je ziet is dat gelukt. Het is in feite erg simpel maar het duurde even voordat ik het door had.</p>
-<p>Hier mijn stappenplan :</p>
-<ul>
-<li>Allereerst heb ik een export gemaakt van mijn gratis wordpress blog.
-<img src="Content/Blog/media/exportwordpress.png" alt="" /></li>
-<li>Daarna de export van wordpress hernoemen naar export.xml</li>
-<li>Toen <a href="https://github.com/lonekorean/wordpress-export-to-markdown">deze</a> tool gebruikt om de export.xml om te smurfen naar .md files</li>
-<li>Daarna heb ik de .md files nog wat moeten aanpassen omdat deze niet overeen kwam met de voorbeelden van <a href="https://github.com/BlazorStatic">blazorstatic</a>.</li>
-<li>In de repo voor github pages heb ik alle html verwijderd en vervangen door wat er nu staat onder blazorwebsite.</li>
-<li>De github workflow heb ik aangepast zodat de blazorwebsite gebouwd werd. De html in de output-folder word gekopieerd naar de branch <code>gh-pages</code>.</li>
-<li>De <code>gh-pages</code> branch dient als basis voor de github.io deployment dankzij deze <a href="https://github.com/JamesIves/github-pages-deploy-action">action</a>.</li>
-<li>Die action ging een paar keer mis, maar uiteindelijk is het gelukt om met het maken van deze <code>.md</code> een html blogpost toe te voegen aan mijn nieuw blog website.</li>
-</ul>
+<p>Allereerst heb ik een export gemaakt van mijn gratis wordpress blog met <a href="https://github.com/lonekorean/wordpress-export-to-markdown">deze</a> tool
+<img src="Content/Blog/media/exportwordpress.png" alt="" />
+Toen nog wat moeten aanpassen omdat de gegenereerde <code>.md</code> bestanden niet overeen kwam met de voorbeelden van <a href="https://github.com/BlazorStatic">blazorstatic</a>.
+Zodra de blog het lokaal goed leek te doen, heb ik met behulp van de workflow de site (na een boel retries) eindelijk live gebracht.</p>
+<p>Werkt best mooi, ik voeg een blogpost toe in de vorm van een markdown-file, ik commit de boel. De github-action start vervolgens de blazorstatic website,
+daar komt een output folder uit. Die output folder bevat de html en media voor de blog en kopieert die naar de branch <code>gh-pages</code>.
+Github Pages is zo ingesteld dat de branch <code>gh-pages</code> als basis dient voor de inhoud van bruuteuzius.github.io :)</p>
 <p><img src="Content/Blog/media/100actions.png" alt="" /></p>
 </div>
                 <div class="pb-6 pt-6 text-sm text-gray-300"><a target="_blank" rel="noopener noreferrer" href="https://github.com/bruuteuzius/bruuteuzius/tree/main/Content/Blog/blog-over-een-blog">View on GitHub</a></div></div>
