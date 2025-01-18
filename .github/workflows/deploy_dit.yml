@@ -1,0 +1,8 @@
+- name: Run webapp and generate static files
+  run: |
+    dotnet run --project path/to/yourProject.csproj  --configuration Release
+
+- name: Deploy to GitHub Pages
+  uses: JamesIves/github-pages-deploy-action@v4
+  with:
+    folder: path/to/output
