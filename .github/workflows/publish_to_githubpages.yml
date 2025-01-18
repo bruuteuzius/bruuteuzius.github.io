@@ -4,7 +4,7 @@ name: Build, publish to gh pages and nuget
 on:
   push:
     branches:
-      - master
+      - main
 
 env:
   WEBAPP_PATH: bruuteuzius
