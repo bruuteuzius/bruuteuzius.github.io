@@ -7,7 +7,7 @@ on:
       - master
 
 env:
-  WEBAPP_PATH: blazorwebsite
+  WEBAPP_PATH: ./blazorwebsite
   WEBAPP_CSPROJ: bruuteuzius.csproj
   ASPNETCORE_ENVIRONMENT: Production
 
