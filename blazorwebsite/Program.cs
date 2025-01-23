@@ -39,7 +39,7 @@ app.Run();
 
 public static class WebsiteKeys
 {
-    public const string GitHubRepo = "https://github.com/bruuteuzius/bruuteuzius";
+    public const string GitHubRepo = "https://github.com/bruuteuzius";
     public const string X = "https://x.com/";
     public const string Title = "Bruuteuzius Blogged";
     public const string BlogPostStorageAddress = $"{GitHubRepo}/tree/main/Content/Blog";
