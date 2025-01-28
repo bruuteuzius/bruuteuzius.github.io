@@ -1,6 +1,6 @@
 ---
 title: KlikAanKlikUit vervangen
-published: 2025-01-18
+published: 2025-01-28
 tags: [homelab, kika, zigbee]
 authors: 
     - name: "bruuteuzius"
