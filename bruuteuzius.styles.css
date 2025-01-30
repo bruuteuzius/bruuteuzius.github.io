@@ -1,0 +1,22 @@
+/* _content/bruuteuzius/Components/Pages/Til.razor.rz.scp.css */
+.markdown-content[b-lgz8c5vrul] {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+}
+
+.markdown-content h1[b-lgz8c5vrul], h2[b-lgz8c5vrul], h3[b-lgz8c5vrul] {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+
+.markdown-content pre[b-lgz8c5vrul] {
+    background: #272822;
+    color: #f8f8f2;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
