@@ -1,11 +1,13 @@
-@page "/til/"
+@page "/til"
 @inject IWebHostEnvironment Env
 
 <h3>TIL</h3>
 
 @if (htmlContent != null)
 {
-    <div class="markdown-content" @bind="htmlContent"></div>
+    <div class="markdown-content">
+        @((MarkupString)htmlContent)
+    </div>
 }
 
 @code {
@@ -14,14 +16,14 @@
     protected override async Task OnInitializedAsync()
     {
         string filePath = Path.Combine(Env.ContentRootPath, "Content/Til/til.md");
-
+        
         if (File.Exists(filePath))
         {
             string markdown = await File.ReadAllTextAsync(filePath);
             htmlContent = Markdig.Markdown.ToHtml(markdown);
-            string outputPath = Path.Combine(Env.ContentRootPath, "output", "til","index.html");
-            Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
-            await File.WriteAllTextAsync(outputPath, htmlContent);
+            // string outputPath = Path.Combine(Env.ContentRootPath, "output", "til","til.html");
+            // Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
+            // await File.WriteAllTextAsync(outputPath, htmlContent);
         }
     }        
 }

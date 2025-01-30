@@ -1,6 +1,7 @@
-.idea/
-.git/
+**/.idea/*
+.git/*
 */output/
 **/bin/*
 **/obj/*
+blazorwebsite/bruuteuzius.sln.DotSettings.user
 
