@@ -1,0 +1,21 @@
+.markdown-content {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+}
+
+.markdown-content h1, h2, h3 {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+
+.markdown-content pre {
+    background: #272822;
+    color: #f8f8f2;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
