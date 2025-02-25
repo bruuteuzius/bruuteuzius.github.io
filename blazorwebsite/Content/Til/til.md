@@ -144,3 +144,5 @@
 > 12-11-2024 - Voor future me als ik weer vergeten ben : `ssh-keygen -t rsa -b 4096 -C "emailadres@website.nl"`
 
 > 17-11-2024 - Sinds Prometheus 3.0 is er een mogelijkheid dat bijvoorbeeld ping errors krijgt. De global setting `fallback_scrape_protocol` kun je dan op `PrometheusText0.0.4` zetten zodat het gedrag hetzelfde blijft.
+
+> 25-02-2025 - Als een (deb) package installen faalt omdat je zo nodig een google coral TPU aan de praat wil krijgen op je mini PC voor Frigate NVR, moet je soms zelf enge C debuilden : https://github.com/google/gasket-driver/issues/27
