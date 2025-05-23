@@ -51,19 +51,21 @@
 <p>Tizen Studio kun je volgens de website alleen op Mac, Ubuntu en Windows installeren.
 Daar dacht iemand op de interwebs anders over : <a href="https://github.com/Toxblh/tizen-studio-arch">https://github.com/Toxblh/tizen-studio-arch</a></p>
 <ul>
-<li><p>Stap 1 : Ik heb een Manjaro KDE plasma floplap, dus tizen op arch installeren is helemaal mooi.</p>
-</li>
-<li><p>Stap 2 : De Samsung tv heeft mijn vrouw ingesteld met haar eigen Samsung-account, dus met dat account heb ik de certificaten aangemaakt volgens <a href="https://developer.samsung.com/tizen/certificate-signing/creating-certificate.html">deze</a> handleiding.</p>
-</li>
-<li><p>Stap 3 : Tijdens het aanmaken van de certificaten vragen ze om een DUID (Device Unique ID) ?? Die kun je vinden in de Settings van de tv en ziet er bij mij zo uit :
-<img src="Content/Blog/media/DUID.jpg" alt="" /></p>
-</li>
-<li><p>Stap 4 : Voer het volgende docker run commando uit om de nieuwste Jellyfin.wrt (nieuwste = lege quotes) te installeren met de gemaakte certificaten :</p>
-</li>
+<li>Stap 1 : Ik heb een Manjaro KDE plasma floplap, dus tizen op arch installeren is helemaal mooi.</li>
+<li>Stap 2 : De Samsung tv heeft mijn vrouw ingesteld met haar eigen Samsung-account, dus met dat account heb ik de certificaten aangemaakt volgens <a href="https://developer.samsung.com/tizen/certificate-signing/creating-certificate.html">deze</a> handleiding.</li>
+<li>Stap 3 : Tijdens het aanmaken van de certificaten vragen ze om een DUID (Device Unique ID) ?? Die kun je vinden in de Settings van de tv en ziet er bij mij zo uit :
+<img src="Content/Blog/media/DUID.jpg" alt="" /></li>
+<li>Stap 4 : Zoek het IP adres van je tv op en onthoud het IP van de pc/laptop van waar je deze handleiding op volgt.</li>
+<li>Stap 5 : Zet je Samsung TV in developer mode. Dat kan als je naar Apps gaat, 123 knopje indrukken. Achtereenvolgens 1,2,3,4,5 en Done aanklikken met je afstandbediening.</li>
+<li>Stap 6 : In de volgende popup zet je de IP van je pc/laptop
+<img src="Content/Blog/media/tizendevmode.jpg" alt="" /></li>
+<li>Stap 6 : Voer op je pc/laptop het volgende docker run commando uit om de nieuwste Jellyfin.wrt (nieuwste = lege quotes) te installeren met de gemaakte certificaten :</li>
 </ul>
 <p><code>docker run --rm -v &quot;/home/{username}/SamsungCertificate/{profielnaam}/author.p12&quot;:/certificates/author.p12 -v &quot;/home/{username}/SamsungCertificate/{profielnaam}/distributor.p12&quot;:/certificates/distributor.p12 ghcr.io/georift/install-jellyfin-tizen {ip-adres-tv} Jellyfin &quot;&quot; '{wachtwoord}'  </code></p>
 <ul>
-<li>Stap 5 : Jellyfin op je home-screen zetten, inloggen op je server met je account en klaar is kees!</li>
+<li>Stap 7 : als het goed is, ziet je output er ongeveer zo uit :
+<img src="Content/Blog/media/tizeninstalloutput.png" alt="" /></li>
+<li>Stap 6 : Jellyfin op je home-screen zetten, inloggen op je server met je account en klaar is kees!</li>
 </ul>
 </div>
                 <div class="pb-6 pt-6 text-sm text-gray-300"><a target="_blank" rel="noopener noreferrer" href="https://github.com/bruuteuzius/tree/main/Content/Blog/jellyfin-client-installeren-op-samsung-qled-vanaf-arch-based-linux">View on GitHub</a></div></div>
