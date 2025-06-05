@@ -149,3 +149,5 @@
 > 25-02-2025 - Als een (deb) package installen faalt omdat je zo nodig een google coral TPU aan de praat wil krijgen op je mini PC voor Frigate NVR, moet je soms zelf enge C debuilden : https://github.com/google/gasket-driver/issues/27
 
 > 14-03-2025 - Laptop herstarten (ipv afloggen en aanloggen) als je je user in de `lock` en `uucp` groep hebt gezet nadat je Arduino Studio hebt geinstalleerd om je ESP32 te flashen. 
+
+> 05-06-2025 - `pushd` en `popd` zijn eigenlijk gewoon vet coole stack waar je directories op kan gooien en afhalen icm `cd`
