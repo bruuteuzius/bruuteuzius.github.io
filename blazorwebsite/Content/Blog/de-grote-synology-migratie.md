@@ -10,12 +10,8 @@ authors:
 ## Wat? Weg van Synology? Waarom?
 Omdat het kan. Omdat mijn usage van mijn 4x4TB disks in SHR-2 nu op 80% vol zit. Maar ook omdat Synology een stunt pulled die ik slecht trek.
 Ik bedoel waarom doen ze [deze](https://nasstore.eu/synologys-2025-drive-compatibility-policy-what-it-means-for-users/) dingen?
-Enniehoe, ik wil dus dikke disks, liefst 16TB had ik me bedacht, maar ik ga niet 4x350 euro neerleggen voor dikke schijven. 
-Ook wil ik wat meer flexibiliteit. Uitbreidingsmogelijkheden. En een fancy RAID hoef ik ook niet. 
-Ik heb ooit 1x meegemaakt dat het mn bacon savede, maar die ene schijf redundantie is gewoon niet cool.
-De oplossing die ik heb bedacht is: ik koop 2 dikke schijven van 16TB en stop die in een Jonsbo N2 (waar er 5 in kunnen) en dan zet ik de foto's
-gewoon op beide schijven. Als er dan 1 uitvalt heb ik die andere nog. Mocht het zo zijn dat ovierge media en games en dingen kwijt raakt, 
-dan kan ik dat opnieuw gaan verzamelen. Boeie. Yolo. Dat soort dingen.
+Enniehoe, ik wil dus dikke disks in een Jonsbo N2, liefst disks van 16TB had ik me bedacht, en dan begin ik met 3 stuks in RAID5. Dat is 32GB aan opslagruimte, 1 disk redundantie. 
+Dan heb ik nog 2 slots over want ik wil wat meer flexibiliteit. Uitbreidingsmogelijkheden.  
 
 ## Hoe?
 Nou! Mijn kale broeder Sebastian heeft een [lijst](https://tweakers.net/gallery/1161278/wenslijst/?wish_id=3736492) voor me gefabriekt met spulleboel dat goed bij elkaar past en voldoet aan mijn wensen.
@@ -48,14 +44,16 @@ Maar om te migreren moet ik een plan hebben. De WAF mag niet omlaag, er mag geen
 ## Hardware
 * Moederbord en CPU waren het goedkoopst bij NBB.com. 
 * Jonsbo N2 kast en CPU cooler bij Proshop.nl gehaald
-* 2x 16tb WD Reds bij Alternate gekocht.
+* 3x 16tb WD Reds bij Alternate gekocht.
 * broeder kaal heeft nog MEM en voeding liggen.
+* De connector voor de harddisks hebben stroom nodig van 2 molex aansluitingen. Deze heb ik besteld en aangesloten op de 2 sata stroomkabels die in de PSU zitten.
+* Er moeten 4 SATA kabels naar de harddisk connector printplaat toe. Die heb ik nu los en genummerd.
 
-## Software
-Bij twijfel niet inhalen zegt de moeder. Dus ik twijfel of ik OpenMediaVault, TrueNAS scale of core, of 
-gewoon een server installatie van Debian of Ubuntu of Arch? 
-
-Eerst maar eens debian server installeren op een oude PC van debian server voorzien en daar OpenMediaVault op installeren.
+## NAS Software
+Bij twijfel niet inhalen zegt de moeder. Dus ik heb lang getwijfeld of ik OpenMediaVault, TrueNAS, of 
+gewoon een server installatie van Debian of Ubuntu of Arch. Het is OpenMediaVault geworden want die leunt op de updates van Debian.
+In principe heb ik ook alleen een UI nodig voor acties met disks enzo. Misschien een filebrowser.
+Eerst maar eens Debian server installeren op een oude PC en daar OpenMediaVault op installeren.
 
 #### OpenMediaVault
 Pro's
@@ -66,12 +64,49 @@ Pro's
 * Klikerdieklik schijven kiezen, shared folders maken enz.
 * Basic netwerk config enzo kan allemaal in de GUI
 * SMB of NFS shares aanmaken geen probleem, volgens mij kan ook iSCSI
-* kan gewoon ssh-en, Shared Folders die je bij mekaar hebt geklikt benaderen, enz.
+* Kan gewoon ssh-en, Shared Folders die je bij mekaar hebt geklikt benaderen, enz.
 * Er is niet een betaalde versie, pure open source onder een GPL licence.
 * De GUI is er voor de basis, de dockertjes kan ik in de terminal ;)
 
 Con's
 * Als ik github zo bekijk zijn ze er wel steady mee bezig maar niet heel erg veel en hard.
 
+#### TrueNAS
+Pro's
+* Meer opties meer beter dan OpenMediaVault
+* Bestaat al lang en komt van FreeNAS
+* ZFS lijkt me interessant om eens uit te zoeken
+
+Con's
+* ZFS is misschien te moeilijk voor wat ik doe. Ook overkill lijkt me.
+* Naast de Community-versie is er een betaalde variant. Het is een bedrijf met een winstoogmerk.
+
+#### Kale servert
+Pro's
+* Enorm leerzaam alles via de terminal
+* Maximale controle
+* Er zijn wel webapps die een filebrowser bieden.
+
+Con's
+* Gaat veel tijd in zitten.
+* Er is geen standaard setup mogelijkheid voor disks, partitioneren, users, enz.
+
+### Synology apps
+Ik heb dus een vervanging nodig voor de Drive Client om foto's en home folders te syncen. 
+Syncting is een optie. Maar voor foto's sowieso Immich. Die heb ik al uitgeprobeerd en werkt prima.
+
+### Docker containers 
+
+### Data verhuizen
+Als ik data over de lijn kopieer, ben ik volgens mij eeuwen bezig. Er is nu 10TB aan data. Ik heb een test gedaan met rsync copy tussen mn Synology en mn Frigate server.
+Beide servers hebben een 10GBit Ethernet aansluiting, ik heb daar CAT5E tussen liggen en dat is 1Gbps.
+Maar op een of andere manier heb ik een kopieersnelheid van 11 MBps... Uitgerekend gaat dat ongeveer 10 dagen duren dat kopiëren.
+Waar de F ligt dat aan? Zelfs 1 GB kopiëren van mijn laptop naar de Synology gaat met 20MB per seconde. 
+Mijn vermoeden is dat de ZIGGO router de bottleneck is. Of de lengte van de kabels. Daarom heb ik bedacht dat ik misschien een
+een switch met 1GBit poorten moet halen, bamischijf 1 en 2 beide met een korte kabel daarop aan moet sluiten en dan de boel kopieren.
+Want theoretisch gezien zou ik met mn CAT5E kabels en mn 1GBps poorten toch 125Mb/s moeten halen ipv 11MB/s.
+
+Een andere optie is data via USB-schijf kopiëren van bamischijf 1 naar 2. Maar Synology heeft het gebruik van USB
+uitgeschakeld sinds DSM 7. 
 
 
