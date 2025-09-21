@@ -108,13 +108,29 @@ iface eno1 inet static
 Daar netwerk restarten :</p>
 <pre><code>sudo systemctl restart networking
 </code></pre>
+<p>Nu wil ik een firewall. Ik heb ergens gelezen dat OpenMediaVault ufw ondersteund, maar ik heb ook gelezen dat die niet lief
+samen speelt met docker. Maar dat lijkt me een later zorg. Deze <a href="https://idroot.us/setup-ufw-firewall-debian-13/">handleiding</a> heb ik gevolgd om ufw te installeren.</p>
 <h3 id="monitoring">Monitoring</h3>
 <p>Eerst maar eens snel de temps monitoren.</p>
 <pre><code>sudo apt install lm-sensors
 </code></pre>
 <p>Daarna de sensors vragenlijst starten met <code>sudo sensors-detect</code> en daarna kun je met <code>sensors</code> zien wat o.a. de temps zijn.</p>
-<p><img src="/media/bamischijf2temps.png" alt="" /></p>
+<p><img src="Content/Blog/media/bamischijf2temps.png" alt="" /></p>
 <p>Bamischijf2 staat al een tijdje in de kast dus dit zijn goeie temps voor een ding dat niet zoveel doet :)</p>
+<blockquote>
+<p>[21-09-2025] Monitoring met grafana en het eerste struikelblok</p>
+</blockquote>
+<p>Maar om nu iedere keer te ssh-en en kijken wat o.a. de temperatuur is van alles, ga ik toch liever naar mn grafana dashboard.
+Dus we gaan node-exporter installeren :</p>
+<pre><code>sudo apt install prometheus-node-exporter
+</code></pre>
+<p>Dan nog de node-exporter poort 9100 toevoegen aan ufw en klaar is Bert <code>sudo ufw allow 9100/tcp</code></p>
+<p><img src="Content/Blog/media/node-exporter.png" alt="" /></p>
+<p>Hierna heb ik de prometheus.yml op mn oude NAS (bamischijf 1.0) aangepast, docker gerestart en ik kan de metric toevoegen :</p>
+<h3 id="struikelblok-1">Struikelblok 1</h3>
+<p>Ik dacht : ik installeer debian 13 want die is de nieuwste. Kom ik er net achter dat OpenMediaVault nog niet wordt ondersteund
+door <a href="https://docs.openmediavault.org/en/latest/releases.html">debian 13</a>... Dus ik ga denk ik maar weer opnieuw een installatie doen,
+maar dan met OpenMediaVault 7 met debian12. Zodra OpenMediaVault 8 klaar is, kan ik upgraden naar debian13.</p>
 </div>
                 <div class="pb-6 pt-6 text-sm text-gray-300"><a target="_blank" rel="noopener noreferrer" href="https://github.com/bruuteuzius/tree/main/Content/Blog/project-bamischijf-2">View on GitHub</a></div></div>
             <footer><div class=" text-sm font-medium leading-5 divide-gray-700 xl:col-start-1 xl:row-start-2 xl:divide-y"><div class="py-4 xl:py-8"><h2 class="text-xs uppercase tracking-wide text-gray-400">Tags</h2>
