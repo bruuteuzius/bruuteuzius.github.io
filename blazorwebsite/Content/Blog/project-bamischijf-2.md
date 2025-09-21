@@ -77,6 +77,9 @@ Daar netwerk restarten :
 sudo systemctl restart networking
 ```
 
+Nu wil ik een firewall. Ik heb ergens gelezen dat OpenMediaVault ufw ondersteund, maar ik heb ook gelezen dat die niet lief
+samen speelt met docker. Maar dat lijkt me een later zorg. Deze [handleiding](https://idroot.us/setup-ufw-firewall-debian-13/) heb ik gevolgd om ufw te installeren.
+
 ### Monitoring
 Eerst maar eens snel de temps monitoren. 
 ```
@@ -84,6 +87,24 @@ sudo apt install lm-sensors
 ```
 Daarna de sensors vragenlijst starten met `sudo sensors-detect` en daarna kun je met `sensors` zien wat o.a. de temps zijn.
 
-![](/media/bamischijf2temps.png)
+![](media/bamischijf2temps.png)
 
 Bamischijf2 staat al een tijdje in de kast dus dit zijn goeie temps voor een ding dat niet zoveel doet :)
+
+> [21-09-2025] Monitoring met grafana en het eerste struikelblok 
+
+Maar om nu iedere keer te ssh-en en kijken wat o.a. de temperatuur is van alles, ga ik toch liever naar mn grafana dashboard.
+Dus we gaan node-exporter installeren :
+```
+sudo apt install prometheus-node-exporter
+```
+Dan nog de node-exporter poort 9100 toevoegen aan ufw en klaar is Bert `sudo ufw allow 9100/tcp`
+
+![](media/node-exporter.png)
+
+Hierna heb ik de prometheus.yml op mn oude NAS (bamischijf 1.0) aangepast, docker gerestart en ik kan de metric toevoegen :
+
+### Struikelblok 1
+Ik dacht : ik installeer debian 13 want die is de nieuwste. Kom ik er net achter dat OpenMediaVault nog niet wordt ondersteund
+door [debian 13](https://docs.openmediavault.org/en/latest/releases.html)... Dus ik ga denk ik maar weer opnieuw een installatie doen, 
+maar dan met OpenMediaVault 7 met debian12. Zodra OpenMediaVault 8 klaar is, kan ik upgraden naar debian13.
