@@ -22,31 +22,40 @@ Zoals [Jim Salter](https://jrs-s.net/2025/08/11/rustdesk-server-on-ubuntu-22-04/
 Kortom, er is geen plan. Ik kan wel een lijstje maken met wat ik nu aan apps, scripts en functionaliteiten op de Synology heb en wat ik straks op 
 mijn nieuwe server wil, of nodig ga hebben.
 
-- [ ] DSM 7 als frontend om in te klikken
-- [ ] SHR2 (een soort RAID5)
-- [ ] Shared Folders (zoals backupgs, downloads, web, docker, homes)
-- [ ] file services (AFP voor Mac, NFS, SMB)
-- [ ] home dirs met daarin o.a. foto's
-- [ ] apps (zoals synology drive client)
-- [ ] docker containers
-- [ ] media en backups
-- [ ] scripts in de task scheduler
-- [ ] firewall
-- [ ] notificatie mogelijkheden
-- [ ] verbinding met UPS
-- [ ] fan control
-- [ ] server monitoring
+- DSM 7 als frontend om in te klikken
+- SHR2 (een soort RAID5)
+- Shared Folders (zoals backupgs, downloads, web, docker, homes)
+- file services (AFP voor Mac, NFS, SMB)
+- home dirs met daarin o.a. foto's
+- apps (zoals synology drive client)
+- docker containers
+- media en backups
+- scripts in de task scheduler
+- firewall
+- notificatie mogelijkheden
+- verbinding met UPS
+- fan control
+- server monitoring
 
 ## Stap 1 : De server installeren
 OpenMediaVault gaat mijn frontend worden ipv DSM 7. Het is ook mogelijk om DSM op een niet-Synology te installeren, maar dat voelt als cheaten en lijkt me niet wat.
-En OMV heeft debian nodig dus tsja. Ondertussen heb ik een usb stick met Debian 13 gemaakt. Ik gebruik op mijn laptop KDE Iso Writer. Die vraagt om een checksum.
+
+> _21-09-2025 Zie struikelblok 1 verderop. Installeer dus debian 12!_
+
+En OMV heeft debian nodig dus tsja. Ondertussen heb ik een usb stick met Debian 12 gemaakt. Ik gebruik op mijn laptop KDE Iso Writer. Die vraagt om een checksum.
 Een checksum van je iso pakken doe je zo : 
 ```
-sha256sum debian13.iso
+sha256sum debian12.iso
 ```
 Het resultaat daarvan plak je in de tool en hoppaaa usb stickie bakken. Dat is cheaten want je moet op de website de sha vinden, maar dat lukte dus niet :)
 
-Nu de server een debian install heeft en ssh staat aan (had ik aangevinkt) kan ik de server boven de voorraadkast plaatsen. 
+### SSH
+Nu de server een debian install heeft, moet ik nog een openssh server draaien. 
+```
+sudo apt install openssh-server
+```
+en daarna starten met `sudo systemctl start ssh` en dan de service enablen zodat ie na een herstart `sudo systemctl enable ssh`.
+Draait de ssh service? `sudo systemctl status ssh` Dan kan de server in de kast boven het voorraadhok.
 Het enige dat de server nodig heeft is stroom en een UTP kabeltje. 
 
 ### Vast ip adres
@@ -58,11 +67,10 @@ bjdiedering is not in the sudoers file. Okeeeeej. Nouwja ook wel fijn dat niet a
 `bjdiedering ALL=(ALL:ALL) ALL` toevoegen aan `/etc/sudoers` en klaar. 
 
 ```
-sudo apt install net-tools dnsutils iproute2 nano` 
+sudo apt install net-tools dnsutils iproute2 nano
 ```
 En dan een static ip adres in `/etc/network/interfaces` (eerst backup maken!)
 ```
-# Static IP configuration for primary interface
 auto eno1
 allow-hotplug eno1
 iface eno1 inet static
@@ -72,13 +80,23 @@ iface eno1 inet static
     dns-nameservers 8.8.8.8 8.8.4.4
 ```
 Misschien nog een keer niet-google dns-en, maar soit. 
-Daar netwerk restarten :
+Daar netwerk restarten:
 ```
 sudo systemctl restart networking
 ```
-
+### Firewall
 Nu wil ik een firewall. Ik heb ergens gelezen dat OpenMediaVault ufw ondersteund, maar ik heb ook gelezen dat die niet lief
-samen speelt met docker. Maar dat lijkt me een later zorg. Deze [handleiding](https://idroot.us/setup-ufw-firewall-debian-13/) heb ik gevolgd om ufw te installeren.
+samen speelt met docker. Maar dat lijkt me een later zorg. 
+Eerst maar eens `sudo apt install ufw`. Dan een backup maken van de basis met `sudo cp /etc/default/ufw /etc/default/ufw.backup` en `sudo cp -r /etc/ufw /etc/ufw.backup`
+Ik wil nog wel kunnen ssh-en dus `sudo ufw add ssh` 
+En een paar basis rules : 
+```
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw default deny forward
+```
+
+Aanzetten en we zijn safe `sudo ufw enable`
 
 ### Monitoring
 Eerst maar eens snel de temps monitoren. 
@@ -87,11 +105,9 @@ sudo apt install lm-sensors
 ```
 Daarna de sensors vragenlijst starten met `sudo sensors-detect` en daarna kun je met `sensors` zien wat o.a. de temps zijn.
 
-![](media/bamischijf2temps.png)
+![](media/nasischijftemp.png)
 
-Bamischijf2 staat al een tijdje in de kast dus dit zijn goeie temps voor een ding dat niet zoveel doet :)
-
-> [21-09-2025] Monitoring met grafana en het eerste struikelblok 
+De nasischijf staat al een tijdje in de kast dus dit zijn goeie temps voor een ding dat niet zoveel doet :)
 
 Maar om nu iedere keer te ssh-en en kijken wat o.a. de temperatuur is van alles, ga ik toch liever naar mn grafana dashboard.
 Dus we gaan node-exporter installeren :
@@ -102,9 +118,24 @@ Dan nog de node-exporter poort 9100 toevoegen aan ufw en klaar is Bert `sudo ufw
 
 ![](media/node-exporter.png)
 
-Hierna heb ik de prometheus.yml op mn oude NAS (bamischijf 1.0) aangepast, docker gerestart en ik kan de metric toevoegen :
+Hierna heb ik de prometheus.yml op mn oude NAS (bamischijf 1.0) aangepast, `docker restart prometheus` en ik kan de metric toevoegen:
+![](media/grafanatemp.png)
+
+Misschien is 25,6 graden niet helemaal zuiver de gemiddelde temperatuur, maar alleszins de temp van teminste 1 CPU core. Mooi woord : alleszins.
 
 ### Struikelblok 1
-Ik dacht : ik installeer debian 13 want die is de nieuwste. Kom ik er net achter dat OpenMediaVault nog niet wordt ondersteund
+Ik dacht : ik installeer debian 13 want die is de nieuwste. Kom ik er net op dit punt achter dat OpenMediaVault nog niet wordt ondersteund
 door [debian 13](https://docs.openmediavault.org/en/latest/releases.html)... Dus ik ga denk ik maar weer opnieuw een installatie doen, 
 maar dan met OpenMediaVault 7 met debian12. Zodra OpenMediaVault 8 klaar is, kan ik upgraden naar debian13.
+
+### OpenMediaVault
+De installatiehandleiding kan ik niet veel meer van maken dan wat [hier](https://docs.openmediavault.org/en/latest/installation/on_debian.html) staat.
+Niet vergeten om na de installatie van OMW mezelf toe te voegen als iemand die mag ssh-en: `sudo usermod -a -G _ssh bjdiedering`
+Er staat namelijk duidelijk in de installatie handleiding dat door het installeren van OMV de user die tijdens het installeren
+van debian is aangemaakt, niet perse kan ssh-en. 
+
+Na een reboot, naar http://192.168.178.200 en we krijgen een mooi loginscherm te zien : 
+
+![](media/myfirstomv.png)
+
+Let the fun begin! Voor nu deze post committen naar mn github repo, zodat de blogpost wordt bijgewerkt.
