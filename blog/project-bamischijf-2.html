@@ -61,30 +61,38 @@ De fan die bij de jonsbo zit, niet aansluiten onder de molex stekkers maar op he
 <p>Zoals <a href="https://jrs-s.net/2025/08/11/rustdesk-server-on-ubuntu-22-04/">Jim Salter</a> het mooi zegt : <em>As usual, I’m self-documenting a project while I work on it</em> Dat spreekt me wel enorm aan want ik ben niet zo goed in plannen. Ik doe liever.
 Kortom, er is geen plan. Ik kan wel een lijstje maken met wat ik nu aan apps, scripts en functionaliteiten op de Synology heb en wat ik straks op
 mijn nieuwe server wil, of nodig ga hebben.</p>
-<ul class="contains-task-list">
-<li class="task-list-item"><input disabled="disabled" type="checkbox" /> DSM 7 als frontend om in te klikken</li>
-<li class="task-list-item"><input disabled="disabled" type="checkbox" /> SHR2 (een soort RAID5)</li>
-<li class="task-list-item"><input disabled="disabled" type="checkbox" /> Shared Folders (zoals backupgs, downloads, web, docker, homes)</li>
-<li class="task-list-item"><input disabled="disabled" type="checkbox" /> file services (AFP voor Mac, NFS, SMB)</li>
-<li class="task-list-item"><input disabled="disabled" type="checkbox" /> home dirs met daarin o.a. foto's</li>
-<li class="task-list-item"><input disabled="disabled" type="checkbox" /> apps (zoals synology drive client)</li>
-<li class="task-list-item"><input disabled="disabled" type="checkbox" /> docker containers</li>
-<li class="task-list-item"><input disabled="disabled" type="checkbox" /> media en backups</li>
-<li class="task-list-item"><input disabled="disabled" type="checkbox" /> scripts in de task scheduler</li>
-<li class="task-list-item"><input disabled="disabled" type="checkbox" /> firewall</li>
-<li class="task-list-item"><input disabled="disabled" type="checkbox" /> notificatie mogelijkheden</li>
-<li class="task-list-item"><input disabled="disabled" type="checkbox" /> verbinding met UPS</li>
-<li class="task-list-item"><input disabled="disabled" type="checkbox" /> fan control</li>
-<li class="task-list-item"><input disabled="disabled" type="checkbox" /> server monitoring</li>
+<ul>
+<li>DSM 7 als frontend om in te klikken</li>
+<li>SHR2 (een soort RAID5)</li>
+<li>Shared Folders (zoals backupgs, downloads, web, docker, homes)</li>
+<li>file services (AFP voor Mac, NFS, SMB)</li>
+<li>home dirs met daarin o.a. foto's</li>
+<li>apps (zoals synology drive client)</li>
+<li>docker containers</li>
+<li>media en backups</li>
+<li>scripts in de task scheduler</li>
+<li>firewall</li>
+<li>notificatie mogelijkheden</li>
+<li>verbinding met UPS</li>
+<li>fan control</li>
+<li>server monitoring</li>
 </ul>
 <h2 id="stap-1-de-server-installeren">Stap 1 : De server installeren</h2>
-<p>OpenMediaVault gaat mijn frontend worden ipv DSM 7. Het is ook mogelijk om DSM op een niet-Synology te installeren, maar dat voelt als cheaten en lijkt me niet wat.
-En OMV heeft debian nodig dus tsja. Ondertussen heb ik een usb stick met Debian 13 gemaakt. Ik gebruik op mijn laptop KDE Iso Writer. Die vraagt om een checksum.
+<p>OpenMediaVault gaat mijn frontend worden ipv DSM 7. Het is ook mogelijk om DSM op een niet-Synology te installeren, maar dat voelt als cheaten en lijkt me niet wat.</p>
+<blockquote>
+<p><em>21-09-2025 Zie struikelblok 1 verderop. Installeer dus debian 12!</em></p>
+</blockquote>
+<p>En OMV heeft debian nodig dus tsja. Ondertussen heb ik een usb stick met Debian 12 gemaakt. Ik gebruik op mijn laptop KDE Iso Writer. Die vraagt om een checksum.
 Een checksum van je iso pakken doe je zo :</p>
-<pre><code>sha256sum debian13.iso
+<pre><code>sha256sum debian12.iso
 </code></pre>
 <p>Het resultaat daarvan plak je in de tool en hoppaaa usb stickie bakken. Dat is cheaten want je moet op de website de sha vinden, maar dat lukte dus niet :)</p>
-<p>Nu de server een debian install heeft en ssh staat aan (had ik aangevinkt) kan ik de server boven de voorraadkast plaatsen.
+<h3 id="ssh">SSH</h3>
+<p>Nu de server een debian install heeft, moet ik nog een openssh server draaien.</p>
+<pre><code>sudo apt install openssh-server
+</code></pre>
+<p>en daarna starten met <code>sudo systemctl start ssh</code> en dan de service enablen zodat ie na een herstart <code>sudo systemctl enable ssh</code>.
+Draait de ssh service? <code>sudo systemctl status ssh</code> Dan kan de server in de kast boven het voorraadhok.
 Het enige dat de server nodig heeft is stroom en een UTP kabeltje.</p>
 <h3 id="vast-ip-adres">Vast ip adres</h3>
 <p>Eerst maar eens een update doen.</p>
@@ -92,11 +100,10 @@ Het enige dat de server nodig heeft is stroom en een UTP kabeltje.</p>
 </code></pre>
 <p>bjdiedering is not in the sudoers file. Okeeeeej. Nouwja ook wel fijn dat niet alles aan staat en ik zelf ook wat moet doen.
 <code>bjdiedering ALL=(ALL:ALL) ALL</code> toevoegen aan <code>/etc/sudoers</code> en klaar.</p>
-<pre><code>sudo apt install net-tools dnsutils iproute2 nano` 
+<pre><code>sudo apt install net-tools dnsutils iproute2 nano
 </code></pre>
 <p>En dan een static ip adres in <code>/etc/network/interfaces</code> (eerst backup maken!)</p>
-<pre><code># Static IP configuration for primary interface
-auto eno1
+<pre><code>auto eno1
 allow-hotplug eno1
 iface eno1 inet static
     address 192.168.178.200
@@ -105,32 +112,48 @@ iface eno1 inet static
     dns-nameservers 8.8.8.8 8.8.4.4
 </code></pre>
 <p>Misschien nog een keer niet-google dns-en, maar soit.
-Daar netwerk restarten :</p>
+Daar netwerk restarten:</p>
 <pre><code>sudo systemctl restart networking
 </code></pre>
+<h3 id="firewall">Firewall</h3>
 <p>Nu wil ik een firewall. Ik heb ergens gelezen dat OpenMediaVault ufw ondersteund, maar ik heb ook gelezen dat die niet lief
-samen speelt met docker. Maar dat lijkt me een later zorg. Deze <a href="https://idroot.us/setup-ufw-firewall-debian-13/">handleiding</a> heb ik gevolgd om ufw te installeren.</p>
+samen speelt met docker. Maar dat lijkt me een later zorg.
+Eerst maar eens <code>sudo apt install ufw</code>. Dan een backup maken van de basis met <code>sudo cp /etc/default/ufw /etc/default/ufw.backup</code> en <code>sudo cp -r /etc/ufw /etc/ufw.backup</code>
+Ik wil nog wel kunnen ssh-en dus <code>sudo ufw add ssh</code>
+En een paar basis rules :</p>
+<pre><code>sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw default deny forward
+</code></pre>
+<p>Aanzetten en we zijn safe <code>sudo ufw enable</code></p>
 <h3 id="monitoring">Monitoring</h3>
 <p>Eerst maar eens snel de temps monitoren.</p>
 <pre><code>sudo apt install lm-sensors
 </code></pre>
 <p>Daarna de sensors vragenlijst starten met <code>sudo sensors-detect</code> en daarna kun je met <code>sensors</code> zien wat o.a. de temps zijn.</p>
-<p><img src="Content/Blog/media/bamischijf2temps.png" alt="" /></p>
-<p>Bamischijf2 staat al een tijdje in de kast dus dit zijn goeie temps voor een ding dat niet zoveel doet :)</p>
-<blockquote>
-<p>[21-09-2025] Monitoring met grafana en het eerste struikelblok</p>
-</blockquote>
+<p><img src="Content/Blog/media/nasischijftemp.png" alt="" /></p>
+<p>De nasischijf staat al een tijdje in de kast dus dit zijn goeie temps voor een ding dat niet zoveel doet :)</p>
 <p>Maar om nu iedere keer te ssh-en en kijken wat o.a. de temperatuur is van alles, ga ik toch liever naar mn grafana dashboard.
 Dus we gaan node-exporter installeren :</p>
 <pre><code>sudo apt install prometheus-node-exporter
 </code></pre>
 <p>Dan nog de node-exporter poort 9100 toevoegen aan ufw en klaar is Bert <code>sudo ufw allow 9100/tcp</code></p>
 <p><img src="Content/Blog/media/node-exporter.png" alt="" /></p>
-<p>Hierna heb ik de prometheus.yml op mn oude NAS (bamischijf 1.0) aangepast, docker gerestart en ik kan de metric toevoegen :</p>
+<p>Hierna heb ik de prometheus.yml op mn oude NAS (bamischijf 1.0) aangepast, <code>docker restart prometheus</code> en ik kan de metric toevoegen:
+<img src="Content/Blog/media/grafanatemp.png" alt="" /></p>
+<p>Misschien is 25,6 graden niet helemaal zuiver de gemiddelde temperatuur, maar alleszins de temp van teminste 1 CPU core. Mooi woord : alleszins.</p>
 <h3 id="struikelblok-1">Struikelblok 1</h3>
-<p>Ik dacht : ik installeer debian 13 want die is de nieuwste. Kom ik er net achter dat OpenMediaVault nog niet wordt ondersteund
+<p>Ik dacht : ik installeer debian 13 want die is de nieuwste. Kom ik er net op dit punt achter dat OpenMediaVault nog niet wordt ondersteund
 door <a href="https://docs.openmediavault.org/en/latest/releases.html">debian 13</a>... Dus ik ga denk ik maar weer opnieuw een installatie doen,
 maar dan met OpenMediaVault 7 met debian12. Zodra OpenMediaVault 8 klaar is, kan ik upgraden naar debian13.</p>
+<h3 id="openmediavault">OpenMediaVault</h3>
+<p>De installatiehandleiding kan ik niet veel meer van maken dan wat <a href="https://docs.openmediavault.org/en/latest/installation/on_debian.html">hier</a> staat.
+Niet vergeten om na de installatie van OMW mezelf toe te voegen als iemand die mag ssh-en: <code>sudo usermod -a -G _ssh bjdiedering</code>
+Er staat namelijk duidelijk in de installatie handleiding dat door het installeren van OMV de user die tijdens het installeren
+van debian is aangemaakt, niet perse kan ssh-en.</p>
+<p>Na een reboot, naar <a href="http://192.168.178.200">http://192.168.178.200</a> en we krijgen een mooi loginscherm te zien :</p>
+<p><img src="Content/Blog/media/myfirstomv.png" alt="" /></p>
+<p>Let the fun begin! Voor nu deze post committen naar mn github repo, zodat de blogpost wordt bijgewerkt.</p>
 </div>
                 <div class="pb-6 pt-6 text-sm text-gray-300"><a target="_blank" rel="noopener noreferrer" href="https://github.com/bruuteuzius/tree/main/Content/Blog/project-bamischijf-2">View on GitHub</a></div></div>
             <footer><div class=" text-sm font-medium leading-5 divide-gray-700 xl:col-start-1 xl:row-start-2 xl:divide-y"><div class="py-4 xl:py-8"><h2 class="text-xs uppercase tracking-wide text-gray-400">Tags</h2>
