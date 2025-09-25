@@ -151,3 +151,5 @@
 > 14-03-2025 - Laptop herstarten (ipv afloggen en aanloggen) als je je user in de `lock` en `uucp` groep hebt gezet nadat je Arduino Studio hebt geinstalleerd om je ESP32 te flashen. 
 
 > 05-06-2025 - `pushd` en `popd` zijn eigenlijk gewoon vet coole stack waar je directories op kan gooien en afhalen icm `cd`
+
+> 25-09-2025 - als home assistant op de app een 403 forbidden laat zien, maar op de laptop doet ie het nog wel : dikke kans dat het IP adres van de telefoon in ip_bans.yml zit :) 
