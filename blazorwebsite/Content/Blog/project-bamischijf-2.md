@@ -139,3 +139,45 @@ Na een reboot, naar http://192.168.178.200 en we krijgen een mooi loginscherm te
 ![](media/myfirstomv.png)
 
 Let the fun begin! Voor nu deze post committen naar mn github repo, zodat de blogpost wordt bijgewerkt.
+
+#### Plugins
+Laten we beginnen met DNS instellen in de GUI want anders kan ik niet wgetten vanaf een terminal. Klik op Netwerk, Interfaces,
+klik op je netwerk-kaart (bij mij was dat eno1), scroll naar beneden en vul een DNS in. Bijvoorbeeld 8.8.8.8 (van google) of 1.1.1.1 (cloudflare)
+Nu kun je in je terminal : 
+```
+wget -O - https://github.com/OpenMediaVault-Plugin-Developers/packages/raw/master/install | bash
+```
+Als je DNS niet instelt, krijg je deze foutmelding :
+`Resolving github.com (github.com)... failed: Temporary failure in name resolution.
+wget: unable to resolve host address ‘github.com’`
+
+#### ZFS
+Nadat omv-extras is geinstalleerd: refresh de pagina en zoek onder Plugins naar de plugin **openmediavault-kernel** en installeer deze. 
+De proxmox kernel is maximaal stabiel en handig als je stabiele ZFS wil draaien heb ik ergens gelezen.
+Ga nu (na de page refresh) naar System, Kernel, en kies uit de dropdown de nieuwste proxmox kernel :
+![](media/proxmox-kernel.png)
+Kies een proxmox kernel en zet die als boot. De proxmox kernels eindigen met -pve 
+
+Installeer nu **openmediavault-zfs**. Refresh de pagina weer en ga via Storage naar zfs. Nu moet je dus een naam gaan kiezen.
+Iedereen op de interwebs kiest voor "tank". Maar ik dacht eerst aan "deadpool". Maar dat is luguber. Terwijl het misschien wel goed is. 
+Deadpool kan iig niet dood.... Kies een naam, kies het type van de pool (ik heb RAID-Z1), kies de disks waar je de pool mee wil maken.
+Ik heb 3 disks van 16TB. Vanwege RAID-Z1 krijg heb ik 1 disk voor pariteit en ongeveer 2 disks voor data. 
+Technisch gezien zou de totale capaciteit 32 TB moeten zijn, maar de 29TB snap ik ook wel. Ik heb ashift op `12` gezet en compression op `lz4`.
+Nu de pool bestaat kan ik een paar filesystems toevoegen zoals backups.
+
+![](media/filesystem-backups.png)
+
+Tijd om een kopieer-test uit te voeren.
+Laat ik eens een SQL Server backup rsync-en van bamischijf naar de nasischijf. Maar dan ben ik niet zo heel erg blij met de overdrachtsnelheid...
+Ook al gebruik ik compressie en staan de NASen dicht bij elkaar en zit er een gigabit switch tussen... hier gaat iets niet goed: 
+![](media/copy-backup-from-bamischijf.png)
+Dat is toch erg?! 17mb/s! Dat gaat voor 10TB aan data (10.000.000mb / 17) = 588235 seconden duren! Ofwel 163 uur! Ofwel 6,8 dagen!
+Gelukkig had ik dit van tevoren bedacht en heb ik 2x USB 3.0 naar 2.5gb adapters gekocht. Die ga ik in beide NASsen prikken, statisch IP adres koppelen en Bob is uwen oom.
+In theorie... wordt vervolgd!
+
+
+
+
+
+
+
