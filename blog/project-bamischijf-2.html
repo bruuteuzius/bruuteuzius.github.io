@@ -64,7 +64,7 @@ mijn nieuwe server wil, of nodig ga hebben.</p>
 <ul>
 <li>DSM 7 als frontend om in te klikken</li>
 <li>SHR2 (een soort RAID5)</li>
-<li>Shared Folders (zoals backupgs, downloads, web, docker, homes)</li>
+<li>Shared Folders (zoals backups, downloads, web, docker, homes)</li>
 <li>file services (AFP voor Mac, NFS, SMB)</li>
 <li>home dirs met daarin o.a. foto's</li>
 <li>apps (zoals synology drive client)</li>
@@ -78,6 +78,10 @@ mijn nieuwe server wil, of nodig ga hebben.</p>
 <li>server monitoring</li>
 </ul>
 <h2 id="stap-1-de-server-installeren">Stap 1 : De server installeren</h2>
+<p>Boven onze voorraadkast in de gang, had ik nog een loze ruimte. Deze ruimte is naast de meterkast, dus het leek me een mooie plek
+voor mijn servers. De Frigate-server (een Beelink EQ14) staat er al, mijn nasischijf kan er prima naast :</p>
+<p><img src="Content/Blog/media/nasischijf.jpeg" alt="" />
+<em>Vet he? Ik heb die houten plaat weggeschroeft, kit er omheen weggesneden en een paar keukenkastjes-scharnieren gebruikt, om een deurtje te maken. Nu valt het niet op dat er iets achter zit, en als ik er bij moet dan kan dat :)</em></p>
 <p>OpenMediaVault gaat mijn frontend worden ipv DSM 7. Het is ook mogelijk om DSM op een niet-Synology te installeren, maar dat voelt als cheaten en lijkt me niet wat.</p>
 <blockquote>
 <p><em>21-09-2025 Zie struikelblok 1 verderop. Installeer dus debian 12!</em></p>
@@ -88,7 +92,7 @@ Een checksum van je iso pakken doe je zo :</p>
 </code></pre>
 <p>Het resultaat daarvan plak je in de tool en hoppaaa usb stickie bakken. Dat is cheaten want je moet op de website de sha vinden, maar dat lukte dus niet :)</p>
 <h3 id="ssh">SSH</h3>
-<p>Nu de server een debian install heeft, moet ik nog een openssh server draaien.</p>
+<p>Nu de server een debian install heeft, moet ik nog een ssh server draaien.</p>
 <pre><code>sudo apt install openssh-server
 </code></pre>
 <p>en daarna starten met <code>sudo systemctl start ssh</code> en dan de service enablen zodat ie na een herstart <code>sudo systemctl enable ssh</code>.
@@ -175,11 +179,14 @@ Ik heb 3 disks van 16TB. Vanwege RAID-Z1 krijg heb ik 1 disk voor pariteit en on
 Technisch gezien zou de totale capaciteit 32 TB moeten zijn, maar de 29TB snap ik ook wel. Ik heb ashift op <code>12</code> gezet en compression op <code>lz4</code>.
 Nu de pool bestaat kan ik een paar filesystems toevoegen zoals backups.</p>
 <p><img src="Content/Blog/media/filesystem-backups.png" alt="" /></p>
+<p>Ik ben er achter gekomen dat als je bijvoorbeeld een NFS of SMB share wil maken, dat je daarvoor eerst een Shared Folder moet maken.
+De filesystems die ik heb gemaakt, ga ik ook shared folders voor maken. Als je van het filesystem <code>/pool/backups</code> een shared folder wil maken,
+is het aan te raden om het relative path <strong>niet</strong> <code>/backups/</code> te maken, maar <code>/</code> want anders krijg je <code>/pool/backups/backups</code> als shared folder.</p>
 <p>Tijd om een kopieer-test uit te voeren.
 Laat ik eens een SQL Server backup rsync-en van bamischijf naar de nasischijf. Maar dan ben ik niet zo heel erg blij met de overdrachtsnelheid...
-Ook al gebruik ik compressie en staan de NASen dicht bij elkaar en zit er een gigabit switch tussen... hier gaat iets niet goed:
-<img src="Content/Blog/media/copy-backup-from-bamischijf.png" alt="" />
-Dat is toch erg?! 17mb/s! Dat gaat voor 10TB aan data (10.000.000mb / 17) = 588235 seconden duren! Ofwel 163 uur! Ofwel 6,8 dagen!
+Ook al gebruik ik compressie en staan de NASen dicht bij elkaar en zit er een gigabit switch tussen... hier gaat iets niet goed:</p>
+<p><img src="Content/Blog/media/copy-backup-from-bamischijf.png" alt="" /></p>
+<p>Dat is toch erg?! 17mb/s! Dat gaat voor 10TB aan data (10.000.000mb / 17) = 588235 seconden duren! Ofwel 163 uur! Ofwel 6,8 dagen!
 Gelukkig had ik dit van tevoren bedacht en heb ik 2x USB 3.0 naar 2.5gb adapters gekocht. Die ga ik in beide NASsen prikken, statisch IP adres koppelen en Bob is uwen oom.
 In theorie... wordt vervolgd!</p>
 </div>
