@@ -24,7 +24,7 @@ mijn nieuwe server wil, of nodig ga hebben.
 
 - DSM 7 als frontend om in te klikken
 - SHR2 (een soort RAID5)
-- Shared Folders (zoals backupgs, downloads, web, docker, homes)
+- Shared Folders (zoals backups, downloads, web, docker, homes)
 - file services (AFP voor Mac, NFS, SMB)
 - home dirs met daarin o.a. foto's
 - apps (zoals synology drive client)
@@ -38,6 +38,12 @@ mijn nieuwe server wil, of nodig ga hebben.
 - server monitoring
 
 ## Stap 1 : De server installeren
+Boven onze voorraadkast in de gang, had ik nog een loze ruimte. Deze ruimte is naast de meterkast, dus het leek me een mooie plek
+voor mijn servers. De Frigate-server (een Beelink EQ14) staat er al, mijn nasischijf kan er prima naast :
+
+![](media/nasischijf.jpeg)
+_Vet he? Ik heb die houten plaat weggeschroeft, kit er omheen weggesneden en een paar keukenkastjes-scharnieren gebruikt, om een deurtje te maken. Nu valt het niet op dat er iets achter zit, en als ik er bij moet dan kan dat :)_
+
 OpenMediaVault gaat mijn frontend worden ipv DSM 7. Het is ook mogelijk om DSM op een niet-Synology te installeren, maar dat voelt als cheaten en lijkt me niet wat.
 
 > _21-09-2025 Zie struikelblok 1 verderop. Installeer dus debian 12!_
@@ -50,7 +56,7 @@ sha256sum debian12.iso
 Het resultaat daarvan plak je in de tool en hoppaaa usb stickie bakken. Dat is cheaten want je moet op de website de sha vinden, maar dat lukte dus niet :)
 
 ### SSH
-Nu de server een debian install heeft, moet ik nog een openssh server draaien. 
+Nu de server een debian install heeft, moet ik nog een ssh server draaien. 
 ```
 sudo apt install openssh-server
 ```
@@ -167,17 +173,66 @@ Nu de pool bestaat kan ik een paar filesystems toevoegen zoals backups.
 
 ![](media/filesystem-backups.png)
 
+Ik ben er achter gekomen dat als je bijvoorbeeld een NFS of SMB share wil maken, dat je daarvoor eerst een Shared Folder moet maken.
+De filesystems die ik heb gemaakt, ga ik ook shared folders voor maken. Als je van het filesystem `/pool/backups` een shared folder wil maken,
+is het aan te raden om het relative path **niet** `/backups/` te maken, maar `/` want anders krijg je `/pool/backups/backups` als shared folder.
+
 Tijd om een kopieer-test uit te voeren.
 Laat ik eens een SQL Server backup rsync-en van bamischijf naar de nasischijf. Maar dan ben ik niet zo heel erg blij met de overdrachtsnelheid...
 Ook al gebruik ik compressie en staan de NASen dicht bij elkaar en zit er een gigabit switch tussen... hier gaat iets niet goed: 
+
 ![](media/copy-backup-from-bamischijf.png)
+
 Dat is toch erg?! 17mb/s! Dat gaat voor 10TB aan data (10.000.000mb / 17) = 588235 seconden duren! Ofwel 163 uur! Ofwel 6,8 dagen!
-Gelukkig had ik dit van tevoren bedacht en heb ik 2x USB 3.0 naar 2.5gb adapters gekocht. Die ga ik in beide NASsen prikken, statisch IP adres koppelen en Bob is uwen oom.
+Gelukkig had ik dit van tevoren bedacht en heb ik 2x USB 3.0 naar 2.5gb adapters [gekocht](https://www.amazon.nl/dp/B0CW5YP9BC?ref=ppx_yo2ov_dt_b_fed_asin_title). Die ga ik in beide NASsen prikken, statisch IP adres koppelen en Bob is uwen oom.
 In theorie... wordt vervolgd!
 
+> _28-09-2025 ondertussen de 2.5g adapters tussen de Synology en de Jonsbo geprikt, met een cat6a kabel_
 
+#### Netwerk kopieer snelheid
+Ok dus ik heb de adapters aangesloten en de kabel zit ertussen. Eerst maar eens kijken of de usb apparaten herkend worden met `lsusb` en tattaaaaaa :
 
+![](media/realtek-usb-ethernet.png)
 
+In OMV is het makkelijk, interface toevoegen via Network, Interfaces, Create. 
+1. Kies een device (enx00nogwat)
+2. Kies method Static
+3. Kies een adres : 192.168.100.1
+4. Kies dezelfde netmask als de andere interface : 255.255.255.0
+5. We hebben geen gateway nodig want we gaan toch net internet niet op.
+6. Scroll naar onder naar Advanced Settings en kies MTU 9000 (inderdaad : jumbo frames)
+7. Akkordeer de wijzigingen en we zijn goed om te gaan!
 
+In Synology is het wat lastiger. Gelukkig zijn er velen mij voorgegaan in een [oplossing](https://github.com/bb-qq/r8152) als dit met een USB adapter.
+1. Omdat ik een Synology DS920+ heb, met _gemini_ chipset, moet ik deze downloaden : https://github.com/bb-qq/r8152/releases/download/2.20.1-1/r8152-geminilake-2.20.1-1_7.2.spk
+2. de gedownload .spk onder Package Management een manual install doen.
+3. Vinkje voor _Run af ter installation_ uitvinken.
+4. Dat faalt, dat was verwacht, daarom deze opdracht uitvoeren : ` sudo install -m 4755 -o root -D /var/packages/r8152/target/r8152/spk_su /opt/sbin/spk_su`
+5. Daarna opnieuw proberen, runnen en klaarrrr
+![](media/rtl8152-spk.png)
+6. Nu is er ook een extra netwerk interface bijgekomen, onder Control Panel, Network : een **LAN 3** 
+7. Edit de waarden onder Use Manual Configuration : 
+   8. IP = 192.168.100.2
+   9. zelfde subnet mask 255.255.255.0
+   10. geen gateway en DNS
+   11. MTU ook hier op 9000 zetten.
+12. Klaar!
 
+Nu wordt het tijd om nog eens een kopieer-actie te doen.
 
+![](media/twee-en-een-half-giegelbits.png)
+
+Nouw, kijk, dat gaat al een stuk sneller toch? Eens kijken wat iperf te melden heeft :
+
+```
+# Op bamischijf
+iperf3 -s
+
+# Op nasischijf
+iperf3 -c 192.168.100.2
+```
+Et voila : 
+
+![](media/iperf-c-nasischijf.png)
+
+2.88gb aan data in 10 seconden. Whoop whoop :)
