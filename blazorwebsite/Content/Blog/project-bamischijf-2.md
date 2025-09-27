@@ -24,7 +24,7 @@ mijn nieuwe server wil, of nodig ga hebben.
 
 - DSM 7 als frontend om in te klikken
 - SHR2 (een soort RAID5)
-- Shared Folders (zoals backupgs, downloads, web, docker, homes)
+- Shared Folders (zoals backups, downloads, web, docker, homes)
 - file services (AFP voor Mac, NFS, SMB)
 - home dirs met daarin o.a. foto's
 - apps (zoals synology drive client)
@@ -38,6 +38,12 @@ mijn nieuwe server wil, of nodig ga hebben.
 - server monitoring
 
 ## Stap 1 : De server installeren
+Boven onze voorraadkast in de gang, had ik nog een loze ruimte. Deze ruimte is naast de meterkast, dus het leek me een mooie plek
+voor mijn servers. De Frigate-server (een Beelink EQ14) staat er al, mijn nasischijf kan er prima naast :
+
+![](media/nasischijf.jpeg)
+_Vet he? Ik heb die houten plaat weggeschroeft, kit er omheen weggesneden en een paar keukenkastjes-scharnieren gebruikt, om een deurtje te maken. Nu valt het niet op dat er iets achter zit, en als ik er bij moet dan kan dat :)_
+
 OpenMediaVault gaat mijn frontend worden ipv DSM 7. Het is ook mogelijk om DSM op een niet-Synology te installeren, maar dat voelt als cheaten en lijkt me niet wat.
 
 > _21-09-2025 Zie struikelblok 1 verderop. Installeer dus debian 12!_
@@ -50,7 +56,7 @@ sha256sum debian12.iso
 Het resultaat daarvan plak je in de tool en hoppaaa usb stickie bakken. Dat is cheaten want je moet op de website de sha vinden, maar dat lukte dus niet :)
 
 ### SSH
-Nu de server een debian install heeft, moet ik nog een openssh server draaien. 
+Nu de server een debian install heeft, moet ik nog een ssh server draaien. 
 ```
 sudo apt install openssh-server
 ```
@@ -167,10 +173,16 @@ Nu de pool bestaat kan ik een paar filesystems toevoegen zoals backups.
 
 ![](media/filesystem-backups.png)
 
+Ik ben er achter gekomen dat als je bijvoorbeeld een NFS of SMB share wil maken, dat je daarvoor eerst een Shared Folder moet maken.
+De filesystems die ik heb gemaakt, ga ik ook shared folders voor maken. Als je van het filesystem `/pool/backups` een shared folder wil maken,
+is het aan te raden om het relative path **niet** `/backups/` te maken, maar `/` want anders krijg je `/pool/backups/backups` als shared folder.
+
 Tijd om een kopieer-test uit te voeren.
 Laat ik eens een SQL Server backup rsync-en van bamischijf naar de nasischijf. Maar dan ben ik niet zo heel erg blij met de overdrachtsnelheid...
 Ook al gebruik ik compressie en staan de NASen dicht bij elkaar en zit er een gigabit switch tussen... hier gaat iets niet goed: 
+
 ![](media/copy-backup-from-bamischijf.png)
+
 Dat is toch erg?! 17mb/s! Dat gaat voor 10TB aan data (10.000.000mb / 17) = 588235 seconden duren! Ofwel 163 uur! Ofwel 6,8 dagen!
 Gelukkig had ik dit van tevoren bedacht en heb ik 2x USB 3.0 naar 2.5gb adapters gekocht. Die ga ik in beide NASsen prikken, statisch IP adres koppelen en Bob is uwen oom.
 In theorie... wordt vervolgd!
