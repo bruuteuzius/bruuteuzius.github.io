@@ -233,6 +233,13 @@ iperf3 -c 192.168.100.2
 <p>Et voila :</p>
 <p><img src="Content/Blog/media/iperf-c-nasischijf.png" alt="" /></p>
 <p>2,88gb aan data in 10 seconden. Whoop whoop :)</p>
+<p>Maar waarom heb ik dan nog steeds een data-transfer snelheid van ongeveer 100MB per seconde?
+Laat ik eens een andere mogelijke bottleneck (de disks) met <code>hdparm</code> onderzoeken op nasischijf :
+<img src="Content/Blog/media/hdparm-nasischijf.png" alt="" /></p>
+<p>En op bamischijf (Synology) de benchmark op 1 van de schijven :
+<img src="Content/Blog/media/benchmark-bamischijf-disk1.png" alt="" /></p>
+<p>Dus bamischijf is de bottleneck met zn disk snelheid...
+Oh well... dan maar 100MB per seconde.</p>
 <h4 id="extras">extra's</h4>
 <p>Ondertussen heb ik ook wat vette plugins gevonden vanuit <a href="https://wiki.omv-extras.org/doku.php?id=start">omv-extra's</a> :</p>
 <ul>
