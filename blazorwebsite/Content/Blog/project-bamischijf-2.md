@@ -235,4 +235,21 @@ Et voila :
 
 ![](media/iperf-c-nasischijf.png)
 
-2.88gb aan data in 10 seconden. Whoop whoop :)
+2,88gb aan data in 10 seconden. Whoop whoop :)
+
+#### extra's
+Ondertussen heb ik ook wat vette plugins gevonden vanuit [omv-extra's](https://wiki.omv-extras.org/doku.php?id=start) :
+- filebrowser : want soms is het gewoon prettig om bestanden te verplaatsen of renamen met de muis (net zoals in DSM 7)
+- nut : want zodra alle data over gezet is, moet nasischijf ook aangesloten worden op mijn [UPS](https://www.bol.com/nl/nl/p/apc-back-ups-950va-noodstroomvoeding-4x-stopcontact).
+- scripts : ik heb nu ook scripts die ik op een schedule uitvoer. Maar misschien moet ik hier ook nog maar cron-jobs voor maken...
+- snmp : ik heb nu op mijn synology ook SNMP en daar haal ik vrij veel systeem-informatie uit voor een Grafana dashboard.
+
+Ik zat nog te denken aan onedrive plugin, maar dan hang ik weer aan een grote cloudprovider en dat wil ik juist niet. 
+
+#### Notificaties!
+Owja als er stront aan de spreekwoordelijke knikker is, moet er natuurlijk een melding in de mail komen. Of misschien op signal, maar dat is een andere blogpost :)
+Eens kijken of proton me kan helpen. Ik ben weg bij gmail (of eigenlijk alles van google) dus vandaar proton.
+Maar oei oei oei, wat valt dit tegen : Proton ondersteund geen imap of smtp vanwege veiligheid enzo. Leuk, maar ook nergens een vinkje die ik kan aanzetten.
+Deze [persoon](https://www.vimoire.com/blog/2025-08-17/Setting-up-ProtonMail-Bridge-on-LAN-server) heeft een oplossing, maar die vind ik nu nog een beetje te spannend. Misschien voor later als ik tailscale uitgeprobeerd heb enzo, dat ik die Proton Mail Bridge kan uitproberen.
+
+
