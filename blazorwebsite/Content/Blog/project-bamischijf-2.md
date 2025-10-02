@@ -262,4 +262,34 @@ Eens kijken of proton me kan helpen. Ik ben weg bij gmail (of eigenlijk alles va
 Maar oei oei oei, wat valt dit tegen : Proton ondersteund geen imap of smtp vanwege veiligheid enzo. Leuk, maar ook nergens een vinkje die ik kan aanzetten.
 Deze [persoon](https://www.vimoire.com/blog/2025-08-17/Setting-up-ProtonMail-Bridge-on-LAN-server) heeft een oplossing, maar die vind ik nu nog een beetje te spannend. Misschien voor later als ik tailscale uitgeprobeerd heb enzo, dat ik die Proton Mail Bridge kan uitproberen.
 
+> _13-10-2025 Ondertussen heb ik rsync-tasks aan de praat en de meeste data is over. Tijd voor een update_
+
+### Rsyncen
+Ondertussen heb ik rsync-tasks gemaakt voor iedere shared directory. Met een rsync task hoef ik de terminal niet open te laten
+staan om een rsync te doen. Het is mogelijk de rsync-tasks te schedulen met cron, maar ik laat ze disabled zonder schedule.
+Aantal settings op de synology : 
+
+![](media/rsync-aan-op-synology.png)
+
+Dan gaan we op OMV een SSH key pair maken : 
+
+![](media/omv-ssh-keypair.png)
+
+Vervolgens kun je deze key installeren op bamischijf :
+
+![](media/install-ssh-nasischijf.png)
+
+Deze key verschijnt dan in de `~/.ssh/authorized_keys` op de Synology.
+Daarna gaan we een rsync task aanmaken in OMV:
+
+![](media/rsync-task.png)
+
+> Let op deze enable ik dus niet want ik wil em 1x runnen en daarna wanneer ik dat nodig vindt. 
+
+Het rsyncen kost de synology namelijk behoorlijk wat resources. Tegelijkertijd rsyncen EN jellyfinnen is niet te doen. 
+Ik moet dus ook het kopieren van de grootste bulk aan data goed plannen. Maar ik moet ook thuis zijn, want ik wil af en toe 
+voelen hoe warm de USB 3.2 naar 2.5gbps adapters worden...
+
+### Dockeren
+Nu alles zo'n beetje over is qua data, is het zaak dat ik de dockers die we thuis gebruiken, weer aan de praat krijg op nasischijf.
 
