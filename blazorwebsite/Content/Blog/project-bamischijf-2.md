@@ -290,6 +290,207 @@ Het rsyncen kost de synology namelijk behoorlijk wat resources. Tegelijkertijd r
 Ik moet dus ook het kopieren van de grootste bulk aan data goed plannen. Maar ik moet ook thuis zijn, want ik wil af en toe 
 voelen hoe warm de USB 3.2 naar 2.5gbps adapters worden...
 
+> _20-10-2025 Okay ik wou dus docker gaan installeren en mn compose files weer up brengen. Maar ik kwam dus eerst iets anders tegen. 
+
 ### Dockeren
 Nu alles zo'n beetje over is qua data, is het zaak dat ik de dockers die we thuis gebruiken, weer aan de praat krijg op nasischijf.
+Maar na het installeren van docker had ik gelezen : doe ff reboot als je tegen een vervelende error :
+
+`permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.51/containers/json": dial unix /var/run/docker.sock: connect: permission denied`
+
+Maar ik had de docker group al gemaakt, $USER aan toegevoegd en permissions gezet, ik kon de docker.sock benaderen. Maar `docker ps` resulteerde in bovenstaande foutmelding. Dus een reboot.
+Toen kon ik OMV niet meer benaderen. Hoe dan?! Dus met het handje de server uitgezet (auw sorry harddisks en andere hardware).  Ik naar boven met de nasischijf, koppelen aan monitor en keyboard.
+Start ie in een blauwe prompt met de keuze op memtest! Nee! Dus ik 4x pijltje naar boven de nieuwste kernel kiezen en gaan. Dikke prima niks aan de hand. 
+Softwarematig de nasischijf weer afgesloten en beneden in kast weer aangesloten. Met de 2.5g usb NIC maar weer geen ping of andere connectie naar nasischijf.
+Dus ik weer een herstart doen, maar nu via toetsenbord en de 2.5g usb NIC eruit. Even wachten op numlock. Numlock uit en 4x pijltjetoets naar boven en ENTER.
+Et voila! Ik kan weer bij nasischijf :) Okay nog een keer `docker ps` als mijn user : presto! U gaat door voor de koelkast.
+
+Nu denk ik 2 dingen: 
+1. Wat ging er mis?
+2. Moet ik een KVM switch?
+
+> _25-10-2025 Vandaag weer even tijd. Ik was van plan mijn dockers weer aan de praat te krijgen, maar toen zag ik bovenstaande onopgelost probleem nog staan _
+
+#### Wat ging er mis?
+Nu weet ik het niet zeker, maar het lijkt er dus op dat ik de proxmox kernel nooit goed heb geinstalleerd of in ieder geval als Default heb gezet.
+Ik had dus na het installeren van de proxmox-kernel (die de zfs-tools bevat) deze pve kernel als default moeten zetten. 
+![](media/system-kernels-pve-set-boot.png)
+
+#### Moet ik een KWVM switch?
+Nee. Die dingen zijn duur. Ik zou er zelf 1 in elkaar kunnen fabrieken maar dan heb ik een raspberry pi nodig (nog een stroom aansluiting) en nog meer tijd.
+Daarbij: zo vaak verwacht ik niet dat ik het grub menu nodig heb. Wel speel ik nog met het idee om een kleine monitor bij een plaatselijke kringloop te scoren.
+Ruimte zat waar nasischijf staat. Er ligt ook al een toetsenbord bij. Voor nu is dit van latere zorg. Ik vind het alleen geen prettig idee dat ik de server na een herstart niet kan 
+benaderen omdat ie blijft hangen in een boot-menu. Op een later tijdstip ga ik me verdiepen in grub menu. Ik wil nu eerst containers heen en weer gooien :)
+
+### Dockeren part deux
+Okay, ik heb dus een /pool/docker waar ik alles van bamischijf heen heb gekopieerd. De docker-compose files heb ik onder mn eigen account op de nasischijf geplaatst.
+Mijn plan is om de compose files in de home folder te zetten en de volumes naar /pool/docker te laten wijzen. De compose files die ik niet meer gebruik of nodig heb, 
+heb ik ondertussen verwijderd. De rest ga ik omsmurfen naar gebruik op nasischijf.
+
+#### sonarqube
+Ooit ben ik een cicd omgeving gestart met gitlab en jenkins en sonarqube, maar daar is alleen sonarqube van overgebleven.
+Tot mijn grote schrik zie ik dat de docker-compose.cicd.yml volumes gebruikt die docker zelf mag bedenken.
+Dat wil ik dus niet, ik wil dat ze in /pool/docker komen. Maar dat betekent ook dat ik de volume data van volumes moet kopieren/migreren naar `/pool/docker`.
+Werkt dat uberhaupt? Laten we het uitproberen.
+
+Eerst de `docker_*` folders overkopieren naar de `/pool/docker/` op nasischijf. Dit doe ik vanaf bamischijf omdat ik daar root moet zijn om die `@docker` folder te zien.
+
+```
+rsync -aP docker_* bjdiedering@192.168.100.1:/pool/docker/
+```
+
+Zodra die folders op de nasischijf staan eerst maar eens een rename, want ik ga geen volledige cicd straat lokaal installeren.
+
+`mv docker-compose.cicd.yml docker-compose.sonarqube.yml`
+
+Daarna kijken wat we moeten aanpassen. De volumes moeten expliciet worden genoemd.
+
+```yaml
+version: "3"
+
+services:
+  sonarqube:
+    image: sonarqube:lts-community #sonarqube:8.9.3-community
+    hostname: sonarqube
+    depends_on:
+      - db
+    environment:
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: true
+      SONAR_SEARCH_JAVAADDITIONALOPTS: "-Dbootstrap.system_call_filter=false"
+      SONAR_JDBC_URL: jdbc:postgresql://db:5432/sonar
+      SONAR_JDBC_USERNAME: sonar
+      SONAR_JDBC_PASSWORD: sonar
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+    ports:
+      - "9000:9000"
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: sonar
+      POSTGRES_PASSWORD: sonar
+    volumes:
+      - postgresql:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
+
+volumes:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
+  postgresql:
+  postgresql_data:
+```
+
+Dat pas ik aan naar dit : 
+
+```yaml
+version: "3"
+
+services:
+  sonarqube:
+    image: sonarqube:lts-community #sonarqube:8.9.3-community
+    hostname: sonarqube
+    privileged: true
+    depends_on:
+      - db
+    environment:
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
+      SONAR_SEARCH_JAVAADDITIONALOPTS: "-Dbootstrap.system_call_filter=false"
+      SONAR_JDBC_URL: "jdbc:postgresql://db:5432/sonar"
+      SONAR_JDBC_USERNAME: "sonar"
+      SONAR_JDBC_PASSWORD: "sonar"
+    volumes:
+      - ${DOCKER}/sonarqube/sonarqube_data:/opt/sonarqube/data
+      - ${DOCKER}/sonarqube/sonarqube_extensions:/opt/sonarqube/extensions
+      - ${DOCKER}/sonarqube/sonarqube_logs:/opt/sonarqube/logs
+    ports:
+      - "9000:9000"
+  db:
+    image: postgres:13
+    hostname: postgres_sonarqube
+    privileged: true
+    environment:
+      POSTGRES_USER: "sonar"
+      POSTGRES_PASSWORD: "sonar"
+    volumes:
+      - ${DOCKER}/sonarqube/db:/var/lib/postgresql
+      - ${DOCKER}/sonarqube/db_data:/var/lib/postgresql/data
+```
+
+En dan uppen die hap: `docker-compose -f docker-compose.sonarqube.yml up -d` en nog 9000 als poort allowen : `sudo ufw allow 9000`
+Helaas... een foutmelding : 
+
+```dockerfile
+Recreating docker-db-1 ...
+
+ERROR: for docker-db-1  'ContainerConfig'
+
+ERROR: for db  'ContainerConfig'
+Traceback (most recent call last):
+  File "/usr/bin/docker-compose", line 33, in <module>
+    sys.exit(load_entry_point('docker-compose==1.29.2', 'console_scripts', 'docker-compose')())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+```
+Okay misschien dan eens `docker compose -f docker-compose.sonarqube.yml up -d`
+Dat ziet er al beter uit : 
+
+![](media/dockercompose.png)
+
+Maar helaas geen containers up `docker ps -a` : 
+
+![](media/docker-ps-a.png)
+
+Wat staat er in de logs?
+```
+The files belonging to this database system will be owned by user "postgres".
+This user must also own the server process.
+
+The database cluster will be initialized with locale "en_US.utf8".
+The default database encoding has accordingly been set to "UTF8".
+The default text search configuration will be set to "english".
+
+Data page checksums are disabled.
+
+initdb: error: directory "/var/lib/postgresql/data" exists but is not empty
+If you want to create a new database system, either remove or empty
+the directory "/var/lib/postgresql/data" or run initdb
+with an argument other than "/var/lib/postgresql/data".
+The files belonging to this database system will be owned by user "postgres".
+This user must also own the server process.
+
+The database cluster will be initialized with locale "en_US.utf8".
+The default database encoding has accordingly been set to "UTF8".
+The default text search configuration will be set to "english".
+
+Data page checksums are disabled.
+
+initdb: error: directory "/var/lib/postgresql/data" exists but is not empty
+If you want to create a new database system, either remove or empty
+the directory "/var/lib/postgresql/data" or run initdb
+with an argument other than "/var/lib/postgresql/data".
+```
+
+Na wat verwoede pogingen om dit aan de praat te krijgen ga ik toch maar een backup maken van de huidige database en te 
+restoren in de nieuwe omgeving. Eerst de bestaande niet opstartende docker containers verwijderen 
+met `docker rm <docker id>` en daarna de backup maken van de huidige database van de container op bamischijf :
+```docker exec 843bf2c6dac8 pg_dump -U sonar -F t sonar > sonarqube.sql```
+
+En de backup scp-en vanaf bamischijf naar de nasischijf:
+
+`scp sonarqube.sql bjdiedering@192.168.100.1:/pool/docker/`
+
+Dan in eerste instantie de docker compose draaien zodat ik een kale/lege sonarqube heb.
+Ook de folders leegmaken die ik ga gebruiken voor de volumes, want anders krijg ik weer die initdb error.
+
+`docker compose -f docker-compose.sonarqube.yml up -d`
+
+Vervolgens de sonarqube.sql restoren vanuit de database container: 
+
+`docker exec -i a271985fa757 pg_restore -U sonar -d sonar --clean --if-exists < /pool/docker/sonarqube.sql`
+
+En dan hopen dat alles werkt. En jawel, na inloggen op sonarqube op poort 9000, zie ik mijn projecten weer terug :)
+
+![](media/sonarqube-is-up.png)
 
