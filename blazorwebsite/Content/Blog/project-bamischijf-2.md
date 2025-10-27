@@ -290,7 +290,7 @@ Het rsyncen kost de synology namelijk behoorlijk wat resources. Tegelijkertijd r
 Ik moet dus ook het kopieren van de grootste bulk aan data goed plannen. Maar ik moet ook thuis zijn, want ik wil af en toe 
 voelen hoe warm de USB 3.2 naar 2.5gbps adapters worden...
 
-> _20-10-2025 Okay ik wou dus docker gaan installeren en mn compose files weer up brengen. Maar ik kwam dus eerst iets anders tegen. 
+> _20-10-2025 Okay ik wou dus docker gaan installeren en mn compose files weer up brengen. Maar ik kwam dus eerst iets anders tegen._
 
 ### Dockeren
 Nu alles zo'n beetje over is qua data, is het zaak dat ik de dockers die we thuis gebruiken, weer aan de praat krijg op nasischijf.
@@ -309,7 +309,7 @@ Nu denk ik 2 dingen:
 1. Wat ging er mis?
 2. Moet ik een KVM switch?
 
-> _25-10-2025 Vandaag weer even tijd. Ik was van plan mijn dockers weer aan de praat te krijgen, maar toen zag ik bovenstaande onopgelost probleem nog staan _
+> _25-10-2025 Vandaag weer even tijd. Ik was van plan mijn dockers weer aan de praat te krijgen, maar toen zag ik bovenstaande onopgelost probleem nog staan_
 
 #### Wat ging er mis?
 Nu weet ik het niet zeker, maar het lijkt er dus op dat ik de proxmox kernel nooit goed heb geinstalleerd of in ieder geval als Default heb gezet.
@@ -493,4 +493,54 @@ Vervolgens de sonarqube.sql restoren vanuit de database container:
 En dan hopen dat alles werkt. En jawel, na inloggen op sonarqube op poort 9000, zie ik mijn projecten weer terug :)
 
 ![](media/sonarqube-is-up.png)
+
+#### portainer
+De volgende is portainer. Die is makkelijk want die gebruikt geen gekke volumes ergens. Wel een portainer folder maar die heb ik leeg gemaakt.
+Ik heb immers nog niet alle containers overgezet.
+
+```yaml
+version: '3'
+
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    privileged: true
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:z
+      - ${DOCKER}/portainer:/data
+    ports:
+      - 8000:8000
+      - 9443:9443
+      - 9001:9000
+
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower
+    privileged: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      #- /etc/timezone:/etc/timezone:ro
+    command: --interval 86400 --http-api-metrics --http-api-token demotoken
+    environment:
+      #- WATCHTOWER_RUN_ONCE=true
+      - WATCHTOWER_CLEANUP=true
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    ports:
+      - 8889:8080
+```
+
+Wel kleine aanpassingen aan de docker compose file gedaan: poort 9000 van portainer heb ik veranderd naar 9001, want die gebruik ik al voor sonarqube.
+Tevens privileged true gezet, want anders kreeg ik deze error bij het starten van de containers in de compose file:
+
+> Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock
+
+Vooral die ```/var/run/docker.sock:/var/run/docker.sock:z``` volume is belangrijk, want daarmee kan portainer de docker daemon benaderen en hoef ik verder geen settings te maken.
+
+![](media/portainer.png)
 
