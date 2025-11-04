@@ -492,6 +492,20 @@ Tevens privileged true gezet, want anders kreeg ik deze error bij het starten va
 </blockquote>
 <p>Vooral die <code>/var/run/docker.sock:/var/run/docker.sock:z</code> volume is belangrijk, want daarmee kan portainer de docker daemon benaderen en hoef ik verder geen settings te maken.</p>
 <p><img src="Content/Blog/media/portainer.png" alt="" /></p>
+<h4 id="monitoring-1">monitoring</h4>
+<p>Okay ik heb een docker compose file met allemaal monitoring shizzle er in. Grafana, influxdb (de oude), paar exporters, je kent het wel.
+Maar postgres_dwh kwam niet op, omdat ik natuurlijk de data folder al had en ik had nog geen schone lei. De initdb functie wordt ogpestart bij het starten van de container.</p>
+<pre><code class="language-angular2html">initdb: error: directory &quot;/var/lib/postgresql/data&quot; exists but is not empty
+
+initdb: hint: If you want to create a new database system, either remove or empty the directory &quot;/var/lib/postgresql/data&quot; or run initdb with an argument other than &quot;/var/lib/postgresql/data&quot;.
+</code></pre>
+<p>Nou! Lijkt me duidelijk toch? Dus ik SMB-share openen om &quot;ff&quot; makkelijk die folder te yeeten. Niet dus. Want ik had nog geen SMB shares gemaakt. Easy peasy toch? Gewoon in OpenMediaVault SMB service enablen met wat default settings en klaar?
+Wrong. Je moet per share de permissions nog instellen :</p>
+<p><img src="Content/Blog/media/permissions_en_acl.png" alt="" /></p>
+<p>Dan als alle settings van Samba goed zijn aangezet, moet ik stiekem nog in <code>ufw</code> allowen:
+<code>sudo ufw allow Samba</code></p>
+<p>En nog het sambawachtwoord zetten. Waarom? Geen idee, anders kan ik niet inloggen als mijn user.
+<code>sudo sambapasswd -a bruuteuzius</code></p>
 </div>
                 <div class="pb-6 pt-6 text-sm text-gray-300"><a target="_blank" rel="noopener noreferrer" href="https://github.com/bruuteuzius/tree/main/Content/Blog/project-bamischijf-2">View on GitHub</a></div></div>
             <footer><div class=" text-sm font-medium leading-5 divide-gray-700 xl:col-start-1 xl:row-start-2 xl:divide-y"><div class="py-4 xl:py-8"><h2 class="text-xs uppercase tracking-wide text-gray-400">Tags</h2>
