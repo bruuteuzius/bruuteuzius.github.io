@@ -544,3 +544,27 @@ Vooral die ```/var/run/docker.sock:/var/run/docker.sock:z``` volume is belangrij
 
 ![](media/portainer.png)
 
+
+#### monitoring
+Okay ik heb een docker compose file met allemaal monitoring shizzle er in. Grafana, influxdb (de oude), paar exporters, je kent het wel.
+Maar postgres_dwh kwam niet op, omdat ik natuurlijk de data folder al had en ik had nog geen schone lei. De initdb functie wordt ogpestart bij het starten van de container.
+
+```angular2html
+initdb: error: directory "/var/lib/postgresql/data" exists but is not empty
+
+initdb: hint: If you want to create a new database system, either remove or empty the directory "/var/lib/postgresql/data" or run initdb with an argument other than "/var/lib/postgresql/data".
+```
+
+Nou! Lijkt me duidelijk toch? Dus ik SMB-share openen om "ff" makkelijk die folder te yeeten. Niet dus. Want ik had nog geen SMB shares gemaakt. Easy peasy toch? Gewoon in OpenMediaVault SMB service enablen met wat default settings en klaar?
+Wrong. Je moet per share de permissions nog instellen :
+
+![](media/permissions_en_acl.png)
+
+Dan als alle settings van Samba goed zijn aangezet, moet ik stiekem nog in `ufw` allowen: 
+```sudo ufw allow Samba```
+
+En nog het sambawachtwoord zetten. Waarom? Geen idee, anders kan ik niet inloggen als mijn user.
+```sudo sambapasswd -a bruuteuzius```
+
+
+
