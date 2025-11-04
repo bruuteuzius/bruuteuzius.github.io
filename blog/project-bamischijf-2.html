@@ -276,7 +276,7 @@ Daarna gaan we een rsync task aanmaken in OMV:</p>
 Ik moet dus ook het kopieren van de grootste bulk aan data goed plannen. Maar ik moet ook thuis zijn, want ik wil af en toe
 voelen hoe warm de USB 3.2 naar 2.5gbps adapters worden...</p>
 <blockquote>
-<p>_20-10-2025 Okay ik wou dus docker gaan installeren en mn compose files weer up brengen. Maar ik kwam dus eerst iets anders tegen.</p>
+<p><em>20-10-2025 Okay ik wou dus docker gaan installeren en mn compose files weer up brengen. Maar ik kwam dus eerst iets anders tegen.</em></p>
 </blockquote>
 <h3 id="dockeren">Dockeren</h3>
 <p>Nu alles zo'n beetje over is qua data, is het zaak dat ik de dockers die we thuis gebruiken, weer aan de praat krijg op nasischijf.
@@ -294,7 +294,7 @@ Et voila! Ik kan weer bij nasischijf :) Okay nog een keer <code>docker ps</code>
 <li>Moet ik een KVM switch?</li>
 </ol>
 <blockquote>
-<p>_25-10-2025 Vandaag weer even tijd. Ik was van plan mijn dockers weer aan de praat te krijgen, maar toen zag ik bovenstaande onopgelost probleem nog staan _</p>
+<p><em>25-10-2025 Vandaag weer even tijd. Ik was van plan mijn dockers weer aan de praat te krijgen, maar toen zag ik bovenstaande onopgelost probleem nog staan</em></p>
 </blockquote>
 <h4 id="wat-ging-er-mis">Wat ging er mis?</h4>
 <p>Nu weet ik het niet zeker, maar het lijkt er dus op dat ik de proxmox kernel nooit goed heb geinstalleerd of in ieder geval als Default heb gezet.
@@ -447,6 +447,51 @@ Ook de folders leegmaken die ik ga gebruiken voor de volumes, want anders krijg 
 <p><code>docker exec -i a271985fa757 pg_restore -U sonar -d sonar --clean --if-exists &lt; /pool/docker/sonarqube.sql</code></p>
 <p>En dan hopen dat alles werkt. En jawel, na inloggen op sonarqube op poort 9000, zie ik mijn projecten weer terug :)</p>
 <p><img src="Content/Blog/media/sonarqube-is-up.png" alt="" /></p>
+<h4 id="portainer">portainer</h4>
+<p>De volgende is portainer. Die is makkelijk want die gebruikt geen gekke volumes ergens. Wel een portainer folder maar die heb ik leeg gemaakt.
+Ik heb immers nog niet alle containers overgezet.</p>
+<pre><code class="language-yaml">version: '3'
+
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    privileged: true
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:z
+      - ${DOCKER}/portainer:/data
+    ports:
+      - 8000:8000
+      - 9443:9443
+      - 9001:9000
+
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower
+    privileged: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      #- /etc/timezone:/etc/timezone:ro
+    command: --interval 86400 --http-api-metrics --http-api-token demotoken
+    environment:
+      #- WATCHTOWER_RUN_ONCE=true
+      - WATCHTOWER_CLEANUP=true
+    labels:
+      - &quot;com.centurylinklabs.watchtower.enable=true&quot;
+    ports:
+      - 8889:8080
+</code></pre>
+<p>Wel kleine aanpassingen aan de docker compose file gedaan: poort 9000 van portainer heb ik veranderd naar 9001, want die gebruik ik al voor sonarqube.
+Tevens privileged true gezet, want anders kreeg ik deze error bij het starten van de containers in de compose file:</p>
+<blockquote>
+<p>Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock</p>
+</blockquote>
+<p>Vooral die <code>/var/run/docker.sock:/var/run/docker.sock:z</code> volume is belangrijk, want daarmee kan portainer de docker daemon benaderen en hoef ik verder geen settings te maken.</p>
+<p><img src="Content/Blog/media/portainer.png" alt="" /></p>
 </div>
                 <div class="pb-6 pt-6 text-sm text-gray-300"><a target="_blank" rel="noopener noreferrer" href="https://github.com/bruuteuzius/tree/main/Content/Blog/project-bamischijf-2">View on GitHub</a></div></div>
             <footer><div class=" text-sm font-medium leading-5 divide-gray-700 xl:col-start-1 xl:row-start-2 xl:divide-y"><div class="py-4 xl:py-8"><h2 class="text-xs uppercase tracking-wide text-gray-400">Tags</h2>
