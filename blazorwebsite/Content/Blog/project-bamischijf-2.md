@@ -544,3 +544,37 @@ Vooral die ```/var/run/docker.sock:/var/run/docker.sock:z``` volume is belangrij
 
 ![](media/portainer.png)
 
+> 04-11-2025 Na portainer is het tijd voor de monitoring stack
+
+#### monitoring
+Okay ik heb een docker compose file met allemaal monitoring shizzle er in. Grafana, influxdb (de oude), paar exporters, je kent het wel.
+Maar postgres_dwh kwam niet op, omdat ik natuurlijk de data folder al had en ik had nog geen schone lei. De initdb functie wordt ogpestart bij het starten van de container.
+
+```angular2html
+initdb: error: directory "/var/lib/postgresql/data" exists but is not empty
+
+initdb: hint: If you want to create a new database system, either remove or empty the directory "/var/lib/postgresql/data" or run initdb with an argument other than "/var/lib/postgresql/data".
+```
+
+Nou! Lijkt me duidelijk toch? Dus ik SMB-share openen om "ff" makkelijk die folder te yeeten. Niet dus. Want ik had nog geen SMB shares gemaakt. Easy peasy toch? Gewoon in OpenMediaVault SMB service enablen met wat default settings en klaar?
+Wrong. Je moet per share de permissions nog instellen :
+
+![](media/permissions_en_acl.png)
+
+Dan als alle settings van Samba goed zijn aangezet, moet ik stiekem nog in `ufw` allowen: 
+```sudo ufw allow Samba```
+
+En nog het sambawachtwoord zetten. Waarom? Geen idee, anders kan ik niet inloggen als mijn user.
+```sudo sambapasswd -a bruuteuzius```
+
+Na een `docker compose -f ~/docker/docker-compose.monitoring.yml up -d` draaien, was zowat alles groen in portainer, maar postgres_dwh had errors in de log.
+Ik had een data folder gemapped die niet leeg was. Dus ik heb als root die folder leegemaakt. Ook moest ik nog de poort 54321 allowen in de firewall : `sudo ufw allow 54321`
+Daarna kon ik postgres_dwh starten. Nu moet ik een vergelijkbare actie als eerst uitvoeren, om mijn DWH te backuppen van de bamischijf en te restoren in nasischijf.
+
+Ondertussen heb ik ook prometheus bekeken of die het doet. Er werden dankzij de prometheus.yml nog bamischijf exporters bezocht. 
+Dus ik heb alle bamischijf ip-adressen vervangen door nasischijf ip-adres. Daarna een `docker restart prometheus` en nu haalt ie (bijna) alles van de exporters die op nasischijf zijn geinstalleerd dankzij de docker-compose.monitoring.yml
+
+![](media/prometheus-error-targets.png)
+
+Er zijn nog een heleboel targets rood, dus die metrics doen het nog niet. Moet ik dus nog fixen. Een andere keer...
+
