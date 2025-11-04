@@ -492,6 +492,9 @@ Tevens privileged true gezet, want anders kreeg ik deze error bij het starten va
 </blockquote>
 <p>Vooral die <code>/var/run/docker.sock:/var/run/docker.sock:z</code> volume is belangrijk, want daarmee kan portainer de docker daemon benaderen en hoef ik verder geen settings te maken.</p>
 <p><img src="Content/Blog/media/portainer.png" alt="" /></p>
+<blockquote>
+<p>04-11-2025 Na portainer is het tijd voor de monitoring stack</p>
+</blockquote>
 <h4 id="monitoring-1">monitoring</h4>
 <p>Okay ik heb een docker compose file met allemaal monitoring shizzle er in. Grafana, influxdb (de oude), paar exporters, je kent het wel.
 Maar postgres_dwh kwam niet op, omdat ik natuurlijk de data folder al had en ik had nog geen schone lei. De initdb functie wordt ogpestart bij het starten van de container.</p>
@@ -506,6 +509,13 @@ Wrong. Je moet per share de permissions nog instellen :</p>
 <code>sudo ufw allow Samba</code></p>
 <p>En nog het sambawachtwoord zetten. Waarom? Geen idee, anders kan ik niet inloggen als mijn user.
 <code>sudo sambapasswd -a bruuteuzius</code></p>
+<p>Na een <code>docker compose -f ~/docker/docker-compose.monitoring.yml up -d</code> draaien, was zowat alles groen in portainer, maar postgres_dwh had errors in de log.
+Ik had een data folder gemapped die niet leeg was. Dus ik heb als root die folder leegemaakt. Ook moest ik nog de poort 54321 allowen in de firewall : <code>sudo ufw allow 54321</code>
+Daarna kon ik postgres_dwh starten. Nu moet ik een vergelijkbare actie als eerst uitvoeren, om mijn DWH te backuppen van de bamischijf en te restoren in nasischijf.</p>
+<p>Ondertussen heb ik ook prometheus bekeken of die het doet. Er werden dankzij de prometheus.yml nog bamischijf exporters bezocht.
+Dus ik heb alle bamischijf ip-adressen vervangen door nasischijf ip-adres. Daarna een <code>docker restart prometheus</code> en nu haalt ie (bijna) alles van de exporters die op nasischijf zijn geinstalleerd dankzij de docker-compose.monitoring.yml</p>
+<p><img src="Content/Blog/media/prometheus-error-targets.png" alt="" /></p>
+<p>Er zijn nog een heleboel targets rood, dus die metrics doen het nog niet. Moet ik dus nog fixen. Een andere keer...</p>
 </div>
                 <div class="pb-6 pt-6 text-sm text-gray-300"><a target="_blank" rel="noopener noreferrer" href="https://github.com/bruuteuzius/tree/main/Content/Blog/project-bamischijf-2">View on GitHub</a></div></div>
             <footer><div class=" text-sm font-medium leading-5 divide-gray-700 xl:col-start-1 xl:row-start-2 xl:divide-y"><div class="py-4 xl:py-8"><h2 class="text-xs uppercase tracking-wide text-gray-400">Tags</h2>
