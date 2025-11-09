@@ -578,3 +578,56 @@ Dus ik heb alle bamischijf ip-adressen vervangen door nasischijf ip-adres. Daarn
 
 Er zijn nog een heleboel targets rood, dus die metrics doen het nog niet. Moet ik dus nog fixen. Een andere keer...
 
+> _07-11-2025 Weer even tijd gehad om uit te zoeken waarom sommige metrics het niet deden.
+
+De meeste die rood waren, was een poorten-issue! Ik heb natuurlijk in het begin ufw geinstalleerd en wel wat poorten toegevoegd, maar niet alle.
+Dus ik heb de poorten toegevoegd die ik in de docker-compose.monitoring.yml had staan met [tufw](https://github.com/peltho/tufw). 
+Dit is een vette tool die je helpt met het beheren van ufw via een terminal interface.
+
+![](media/prometheus-groene-targets.png)
+
+Nu prometheus weer goed werkt, kan ik misschien wel eens een keer een nieuw grafana dashboard maken.
+Belangrijker lijkt me misschien wel postgresql_dwh aan de praat krijgen, want dat vind ik wel belangrijk.
+
+#### media
+Het aanzetten van mn `docker-compose.media.yml` ging vrij soepel. Ik kon alleen nog niet downloaden. Stom ook want ik kwam er 
+echt laat achter dat ik de settings van de bamischijf naar nasischijf had overgekopieerd. Dus ik was in sonarr en radarr aan de downloads naar de deluge van bamischijf aan het sturen.
+Nadat ik dat had aangepast naar nasischijf, werkte het downloaden weer als vanouds.
+
+#### postgresql_dwh
+Alle data van home assistant van die dag, kopieer ik iedere nacht om 01:00 met een bash-script op de synology, van de mariadb database 
+van home assistant, naar mijn eigen DataWarehouse in postgresql_dwh. Hiervoor gebruik ik een combinatie van een python script, en wat code en vieuws in de postgres_dwh.
+Om dat ook op de nasischijf te laten werken, moet ik eerst een backup maken van data uit de bamischijf postgresql_dwh container en restoren in de postgres_dwh 
+database op de nasischijf. Maar dan moet ik er eerst bij kunnen. Ik heb de poort 54321 (uit de docker-compose.monitoring.yml) in ufw toegevoegd, maar ik krijg een connection refused.
+
+Ik heb de postgres_dwh container gestopt, de data folder leeggemaakt (want die had ik al gekopieerd vanaf bamischijf) en daarna de container weer gestart.
+Toen ik de data folder wou leegsmijten, heb ik gezien dat de rechten niet goed stonden. Dus ik heb de eigenaar van de folder veranderd naar mezelf en users met chown :
+`sudo chown -R bjdiedering:users /pool/docker/postgresql_dwh/data/`
+Daarna kon ik de container starten. Maar nog steeds geen connectie. Wat nu weer?
+Blijkbaar had ik in mijn verwoede pogingen om de container aan de praat te krijgen nog een pg_hba.conf aangepast, met blijkbaar een interne poort naar 54321. Dus ik die weer teruggezet naar de originele versie.
+
+Nu is het tijd om een backup te maken van de bamischijf postgresql_dwh database.
+```
+docker exec docker-postgres_dwh-1 pg_dump -U postgres -F t postgres > postgres_dwh.sql
+```
+
+Vervolgens die backup scp-en naar nasischijf :
+```
+scp postgres_dwh.sql bjdiedering@192.168.100.1:/pool/docker/
+```
+
+Daarna de database restoren in de nasischijf postgresql_dwh container :
+```
+docker exec -i docker-postgres_dwh-1 pg_restore -U postgres -d postgres --clean --if-exists < /pool/docker/postgres_dwh.sql
+```
+En jawel! Ik kan weer inloggen met DBeaver en zie mijn tabellen weer terug :)
+
+![](media/dbeaver-postgresql-dwh.png)
+
+Het script dat op bamischijf iedere nacht om 01:00 draait, krijg ik niet snel aan de praat met python venv en gedoe.
+Dus ik heb het script omgesmurft naar een self-contained c# console app. Die werkt prima op nasischijf want het is gewoon een executable.
+Dat wordt een andere blogpost waarin ik dat lelijke ding dat ik snel in elkaar heb geflanst, netjes ga uitleggen en ga refactoren.
+
+In een volgende aanpassing aan deze blogpost, wil ik kijken of de import is gelukt met de in elkaar gehackted c# tool.
+En dan wil ik ook gaan kijken naar jellyfin verhuizen. Daarna ben ik wel klaar met deze blogpost denk ik :)
+
