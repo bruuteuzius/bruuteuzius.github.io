@@ -629,5 +629,37 @@ Dus ik heb het script omgesmurft naar een self-contained c# console app. Die wer
 Dat wordt een andere blogpost waarin ik dat lelijke ding dat ik snel in elkaar heb geflanst, netjes ga uitleggen en ga refactoren.
 
 In een volgende aanpassing aan deze blogpost, wil ik kijken of de import is gelukt met de in elkaar gehackted c# tool.
-En dan wil ik ook gaan kijken naar jellyfin verhuizen. Daarna ben ik wel klaar met deze blogpost denk ik :)
 
+> 10-11-2025 De C# tool werkt, maar nog niet in een cron-job die ik bij elkaar heb geklikt in OpenMediaVault.
+
+Want ik krijg deze error : 
+```config
+Failed to execute command 'export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin; export LC_ALL=C.UTF-8; export LANGUAGE=; export SHELL=/bin/sh; sudo --shell --non-interactive --user='bjdiedering' -- /var/lib/openmediavault/cron.d/userdefined-ee57b243-cf55-4d01-a597-5158d7cbf8f7 2>&1' with exit code '1': Error: Access to the path '/homeassistant_export.csv' is denied.
+
+OMV\ExecException: Failed to execute command 'export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin; export LC_ALL=C.UTF-8; export LANGUAGE=; export SHELL=/bin/sh; sudo --shell --non-interactive --user='bjdiedering' -- /var/lib/openmediavault/cron.d/userdefined-ee57b243-cf55-4d01-a597-5158d7cbf8f7 2>&1' with exit code '1': Error: Access to the path '/homeassistant_export.csv' is denied. in /usr/share/openmediavault/engined/rpc/cron.inc:198
+Stack trace:
+#0 /usr/share/php/openmediavault/rpc/serviceabstract.inc(628): Engined\Rpc\Cron->Engined\Rpc\{closure}()
+#1 /usr/share/openmediavault/engined/rpc/cron.inc(176): OMV\Rpc\ServiceAbstract->execBgProc()
+#2 [internal function]: Engined\Rpc\Cron->execute()
+#3 /usr/share/php/openmediavault/rpc/serviceabstract.inc(124): call_user_func_array()
+#4 /usr/share/php/openmediavault/rpc/rpc.inc(86): OMV\Rpc\ServiceAbstract->callMethod()
+#5 /usr/sbin/omv-engined(546): OMV\Rpc\Rpc::call()
+#6 {main}
+```
+Dit komt omdat de cron-job die ik heb aangemaakt in OpenMediaVault, standaard als root draait. Ik dacht slim te zijn en die als
+mijn eigen user te draaien, maar dat moet toch root zijn blijkbaar. Nadat ik dit had aangepast, update de C# tool mijn DWH als een modderflipper :)
+
+#### tools
+Ondertussen heb ik ook de docker-compose.tools.yml aangeslingerd. Hieraan heb ik nginx toegevoegd. 
+Op mijn oude NAS (bamischijf) draaide onder DSM 7 een fancy pancy webserver. Daar had ik een index.html gemaakt met grote knoppen waarmee ik
+vrij eenvoudig de (die ik dankzij al die dockers had) kon benaderen. Dat wil ik nu ook op nasischijf dus heb ik nginx toegevoegd.
+bamischijf vervangen door nasischijf in de index.html en klaar is Bert. Kiek dan, mooi landing page: 
+
+![](media/nginx-landing-page.png)
+
+Tools bevat verder bookstack met bijbehorende mariadb database en phpmyadmin (for the lolz). 
+
+#### jellyfin
+Nu moet ik toch echt wel jellyfin gaan migreren naar nasischijf en dan kan ik de dockers van bamischijf uitzetten.
+Ik denk dat ik jellyfin geen losse docker-compose ga geven, maar bij docker-compose.media.yml ga toevoegen.
+Maar dat is voor een andere dag want het is nu al laat. 
