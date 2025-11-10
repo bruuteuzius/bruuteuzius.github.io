@@ -663,4 +663,3 @@ Tools bevat verder bookstack met bijbehorende mariadb database en phpmyadmin (fo
 Nu moet ik toch echt wel jellyfin gaan migreren naar nasischijf en dan kan ik de dockers van bamischijf uitzetten.
 Ik denk dat ik jellyfin geen losse docker-compose ga geven, maar bij docker-compose.media.yml ga toevoegen.
 Maar dat is voor een andere dag want het is nu al laat. 
-
