@@ -487,13 +487,12 @@ services:
 </code></pre>
 <p>Wel kleine aanpassingen aan de docker compose file gedaan: poort 9000 van portainer heb ik veranderd naar 9001, want die gebruik ik al voor sonarqube.
 Tevens privileged true gezet, want anders kreeg ik deze error bij het starten van de containers in de compose file:</p>
-<blockquote>
-<p>Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock</p>
-</blockquote>
+<pre><code class="language-config">Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock
+</code></pre>
 <p>Vooral die <code>/var/run/docker.sock:/var/run/docker.sock:z</code> volume is belangrijk, want daarmee kan portainer de docker daemon benaderen en hoef ik verder geen settings te maken.</p>
 <p><img src="Content/Blog/media/portainer.png" alt="" /></p>
 <blockquote>
-<p>04-11-2025 Na portainer is het tijd voor de monitoring stack</p>
+<p><em>04-11-2025 Na portainer is het tijd voor de monitoring stack</em></p>
 </blockquote>
 <h4 id="monitoring-1">monitoring</h4>
 <p>Okay ik heb een docker compose file met allemaal monitoring shizzle er in. Grafana, influxdb (de oude), paar exporters, je kent het wel.
@@ -517,7 +516,7 @@ Dus ik heb alle bamischijf ip-adressen vervangen door nasischijf ip-adres. Daarn
 <p><img src="Content/Blog/media/prometheus-error-targets.png" alt="" /></p>
 <p>Er zijn nog een heleboel targets rood, dus die metrics doen het nog niet. Moet ik dus nog fixen. Een andere keer...</p>
 <blockquote>
-<p>_07-11-2025 Weer even tijd gehad om uit te zoeken waarom sommige metrics het niet deden.</p>
+<p><em>07-11-2025 Weer even tijd gehad om uit te zoeken waarom sommige metrics het niet deden.</em></p>
 </blockquote>
 <p>De meeste die rood waren, was een poorten-issue! Ik heb natuurlijk in het begin ufw geinstalleerd en wel wat poorten toegevoegd, maar niet alle.
 Dus ik heb de poorten toegevoegd die ik in de docker-compose.monitoring.yml had staan met <a href="https://github.com/peltho/tufw">tufw</a>.
@@ -579,10 +578,54 @@ vrij eenvoudig de (die ik dankzij al die dockers had) kon benaderen. Dat wil ik 
 bamischijf vervangen door nasischijf in de index.html en klaar is Bert. Kiek dan, mooi landing page:</p>
 <p><img src="Content/Blog/media/nginx-landing-page.png" alt="" /></p>
 <p>Tools bevat verder bookstack met bijbehorende mariadb database en phpmyadmin (for the lolz).</p>
+<h4 id="unifi-controller-verhuizen">unifi controller verhuizen</h4>
+<p>Ik heb de unifi controller ook geinstalleerd op nasischijf. Hiervoor had ik een aparte blogpost geschreven <a href="https://bjdiedering.nl/blog/unifi-controller-op-docker/">Unifi Controller op Docker</a>
+Nu moet ik dus zorgen dat de AP's de nieuwe controller op nasischijf gaan vinden.</p>
 <h4 id="jellyfin">jellyfin</h4>
 <p>Nu moet ik toch echt wel jellyfin gaan migreren naar nasischijf en dan kan ik de dockers van bamischijf uitzetten.
-Ik denk dat ik jellyfin geen losse docker-compose ga geven, maar bij docker-compose.media.yml ga toevoegen.
-Maar dat is voor een andere dag want het is nu al laat.</p>
+Ik denk dat ik jellyfin geen losse docker-compose ga geven, maar bij docker-compose.media.yml ga toevoegen.</p>
+<blockquote>
+<p><em>12-11-2025 Jellyfin proberen te verhuizen naar nasischijf.</em></p>
+</blockquote>
+<p>Mijn plan is :</p>
+<ol>
+<li>de nieuwste series en films van bamischijf naar nasischijf kopieren met de rsync tasks.</li>
+<li>dan de docker van jellyfin op bamischijf stoppen</li>
+<li>dan de docker-compose.media.yml aanpassen met de jellyfin volumes naar nasischijf</li>
+<li>dan en rsync doen van alle jellyfin data van bamischijf naar nasischijf</li>
+<li>dan de docker-compose.media.yml uppen</li>
+</ol>
+<blockquote>
+<p><em>16-11-2025 Jellyfin verhuizen.</em></p>
+</blockquote>
+<p>Jellyfin toevoegen aan de docker.compose.media.yml was niet gelukt om jellyfin te starten. Ik kreeg een migratie error in de logs.
+Een backup maken van jellyfin vanaf de bamischijf en restoren op de nasischijf hielp ook niet.
+Toen heb ik op de nasischijf de bestaande <code>config</code> map leegegooid en de <code>cache</code> map verwijderd.
+Vanaf bamischijf heb ik toen een rsync gedaan van de <code>config</code> map naar de nasischijf, zodat ik geen permission denied kreeg op bepaalde bestanden.</p>
+<pre><code class="language-config">rsync -aP config/ bjdiedering@192.168.100.1:/pool/docker/jellyfin/config/
+</code></pre>
+<p>Daarna de docker-compose.media.yml uppen en jellyfin starten. En jawel! Jellyfin draait op nasischijf :)
+Vervolgens heb ik onze telefoons naar de nieuwe jellyfin server laten verwijzen en de tv-app ook. We zijn over!</p>
+<h3 id="afronding-van-dit-verhuisproject">Afronding van dit verhuisproject.</h3>
+<p>Ondertussen ben ik redelijk up and running met alles op nasischijf. Laat ik mijn lijstje er nog eens bijpakken :</p>
+<ul class="contains-task-list">
+<li class="task-list-item"><input disabled="disabled" type="checkbox" checked="checked" /> DSM 7 als frontend om in te klikken</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" checked="checked" /> SHR2 (een soort RAID5)</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" checked="checked" /> Shared Folders (zoals backups, downloads, web, docker, homes)</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" checked="checked" /> file services (AFP voor Mac, NFS, SMB) --&gt; ja SMB shares maar nog bijvoorbeeld geen dlna voor muziek</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" checked="checked" /> home dirs met daarin o.a. foto's --&gt; wel foto's overgekopieerd maar nog geen <code>immich</code></li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" /> apps (zoals synology drive client) --&gt; nog niet, idee is <code>syncthing</code></li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" checked="checked" /> docker containers</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" checked="checked" /> media en backups (poah wat een boel data over de lijn!)</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" checked="checked" /> scripts in de task scheduler --&gt; in ieder geval de belangrijkste: mijn DWH import</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" checked="checked" /> firewall --&gt; gedoe met ufw</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" /> notificatie mogelijkheden --&gt; lukte niet echt met proton mail, dus moet iets anders verzinnen</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" /> verbinding met UPS --&gt; wil ik binnenkort op een woensdagmiddag gaan doen</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" /> fan control --&gt; dat kan ik in de bios, maar wil ik nog via een script of een frontendje doen</li>
+<li class="task-list-item"><input disabled="disabled" type="checkbox" checked="checked" /> server monitoring --&gt; prometheus en grafana doen het, dashboard moet nog geupdate worden met bijvoorbeeld data uit <code>collectd</code></li>
+</ul>
+<p>Ondertussen heb ik op een linux-podcast gehoord dat synology zijn plannen om alleen eigen harddisks te ondersteunen weer terugdraait.
+Maar ik vertrouw ze toch niet. Liever mn eigen hardware en software in eigen beheer. En ik heb bakken met ruimte nu :)</p>
 </div>
                 <div class="pb-6 pt-6 text-sm text-gray-300"><a target="_blank" rel="noopener noreferrer" href="https://github.com/bruuteuzius/tree/main/Content/Blog/project-bamischijf-2">View on GitHub</a></div></div>
             <footer><div class=" text-sm font-medium leading-5 divide-gray-700 xl:col-start-1 xl:row-start-2 xl:divide-y"><div class="py-4 xl:py-8"><h2 class="text-xs uppercase tracking-wide text-gray-400">Tags</h2>
