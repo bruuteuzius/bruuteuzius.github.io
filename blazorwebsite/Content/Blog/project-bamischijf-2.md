@@ -537,14 +537,15 @@ services:
 
 Wel kleine aanpassingen aan de docker compose file gedaan: poort 9000 van portainer heb ik veranderd naar 9001, want die gebruik ik al voor sonarqube.
 Tevens privileged true gezet, want anders kreeg ik deze error bij het starten van de containers in de compose file:
-
-> Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock
+```config
+Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock
+```
 
 Vooral die ```/var/run/docker.sock:/var/run/docker.sock:z``` volume is belangrijk, want daarmee kan portainer de docker daemon benaderen en hoef ik verder geen settings te maken.
 
 ![](media/portainer.png)
 
-> 04-11-2025 Na portainer is het tijd voor de monitoring stack
+> _04-11-2025 Na portainer is het tijd voor de monitoring stack_
 
 #### monitoring
 Okay ik heb een docker compose file met allemaal monitoring shizzle er in. Grafana, influxdb (de oude), paar exporters, je kent het wel.
@@ -579,7 +580,7 @@ Dus ik heb alle bamischijf ip-adressen vervangen door nasischijf ip-adres. Daarn
 Er zijn nog een heleboel targets rood, dus die metrics doen het nog niet. Moet ik dus nog fixen. Een andere keer...
 
 
-> _07-11-2025 Weer even tijd gehad om uit te zoeken waarom sommige metrics het niet deden.
+> _07-11-2025 Weer even tijd gehad om uit te zoeken waarom sommige metrics het niet deden._
 
 De meeste die rood waren, was een poorten-issue! Ik heb natuurlijk in het begin ufw geinstalleerd en wel wat poorten toegevoegd, maar niet alle.
 Dus ik heb de poorten toegevoegd die ik in de docker-compose.monitoring.yml had staan met [tufw](https://github.com/peltho/tufw). 
@@ -660,7 +661,52 @@ bamischijf vervangen door nasischijf in de index.html en klaar is Bert. Kiek dan
 
 Tools bevat verder bookstack met bijbehorende mariadb database en phpmyadmin (for the lolz). 
 
+#### unifi controller verhuizen
+Ik heb de unifi controller ook geinstalleerd op nasischijf. Hiervoor had ik een aparte blogpost geschreven [Unifi Controller op Docker](https://bjdiedering.nl/blog/unifi-controller-op-docker/)
+Nu moet ik dus zorgen dat de AP's de nieuwe controller op nasischijf gaan vinden.
+
 #### jellyfin
 Nu moet ik toch echt wel jellyfin gaan migreren naar nasischijf en dan kan ik de dockers van bamischijf uitzetten.
 Ik denk dat ik jellyfin geen losse docker-compose ga geven, maar bij docker-compose.media.yml ga toevoegen.
-Maar dat is voor een andere dag want het is nu al laat. 
+
+> _12-11-2025 Jellyfin proberen te verhuizen naar nasischijf._
+
+Mijn plan is : 
+1. de nieuwste series en films van bamischijf naar nasischijf kopieren met de rsync tasks.
+2. dan de docker van jellyfin op bamischijf stoppen
+3. dan de docker-compose.media.yml aanpassen met de jellyfin volumes naar nasischijf
+4. dan en rsync doen van alle jellyfin data van bamischijf naar nasischijf
+5. dan de docker-compose.media.yml uppen
+
+> _16-11-2025 Jellyfin verhuizen._
+
+Jellyfin toevoegen aan de docker.compose.media.yml was niet gelukt om jellyfin te starten. Ik kreeg een migratie error in de logs.
+Een backup maken van jellyfin vanaf de bamischijf en restoren op de nasischijf hielp ook niet.
+Toen heb ik op de nasischijf de bestaande `config` map leegegooid en de `cache` map verwijderd. 
+Vanaf bamischijf heb ik toen een rsync gedaan van de `config` map naar de nasischijf, zodat ik geen permission denied kreeg op bepaalde bestanden. 
+```config
+rsync -aP config/ bjdiedering@192.168.100.1:/pool/docker/jellyfin/config/
+```
+
+Daarna de docker-compose.media.yml uppen en jellyfin starten. En jawel! Jellyfin draait op nasischijf :)
+Vervolgens heb ik onze telefoons naar de nieuwe jellyfin server laten verwijzen en de tv-app ook. We zijn over!
+
+### Afronding van dit verhuisproject.
+Ondertussen ben ik redelijk up and running met alles op nasischijf. Laat ik mijn lijstje er nog eens bijpakken :
+- [x] DSM 7 als frontend om in te klikken 
+- [x] SHR2 (een soort RAID5)
+- [x] Shared Folders (zoals backups, downloads, web, docker, homes)
+- [x] file services (AFP voor Mac, NFS, SMB) --> ja SMB shares maar nog bijvoorbeeld geen dlna voor muziek
+- [x] home dirs met daarin o.a. foto's --> wel foto's overgekopieerd maar nog geen `immich`
+- [ ] apps (zoals synology drive client) --> nog niet, idee is `syncthing`
+- [x] docker containers
+- [x] media en backups (poah wat een boel data over de lijn!)
+- [x] scripts in de task scheduler --> in ieder geval de belangrijkste: mijn DWH import
+- [x] firewall --> gedoe met ufw
+- [ ] notificatie mogelijkheden --> lukte niet echt met proton mail, dus moet iets anders verzinnen
+- [ ] verbinding met UPS --> wil ik binnenkort op een woensdagmiddag gaan doen
+- [ ] fan control --> dat kan ik in de bios, maar wil ik nog via een script of een frontendje doen
+- [x] server monitoring --> prometheus en grafana doen het, dashboard moet nog geupdate worden met bijvoorbeeld data uit `collectd`
+
+Ondertussen heb ik op een linux-podcast gehoord dat synology zijn plannen om alleen eigen harddisks te ondersteunen weer terugdraait.
+Maar ik vertrouw ze toch niet. Liever mn eigen hardware en software in eigen beheer. En ik heb bakken met ruimte nu :)
