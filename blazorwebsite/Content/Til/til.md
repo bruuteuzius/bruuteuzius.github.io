@@ -152,4 +152,6 @@
 
 > 05-06-2025 - `pushd` en `popd` zijn eigenlijk gewoon vet coole stack waar je directories op kan gooien en afhalen icm `cd`
 
-> 25-09-2025 - als home assistant op de app een 403 forbidden laat zien, maar op de laptop doet ie het nog wel : dikke kans dat het IP adres van de telefoon in ip_bans.yml zit :) 
+> 25-09-2025 - als home assistant op de app een 403 forbidden laat zien, maar op de laptop doet ie het nog wel : dikke kans dat het IP adres van de telefoon in ip_bans.yml zit :)
+
+> 10-12-2025 - mocht ik ooit weer ergens een sonarqube docker zien falen vanwege permissions ofzo, dan deze command aan de postgresql db service toevoegen : `command: postgres -c stats_temp_directory=/tmp` 
