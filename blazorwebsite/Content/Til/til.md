@@ -158,3 +158,6 @@
 
 ## 2026
 > 18-01-2026 - `sudo dd if=/dev/random of=/dev/sda bs=1M status=progress` lijkt me de snelste manier om een disk volledig met random data te overschrijven (bijv. voor secure erase)
+
+> 07-03-2026 - Notificaties op OMV met Proton Mail in combinatie met je eigen domeinnaam? Supersimpel: https://proton.me/support/custom-domain
+> 
