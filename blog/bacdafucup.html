@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/">
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+
+                    colors: {
+                        primary: tailwind.colors.blue
+                    },
+                },},
+                }
+    </script>
+
+
+    </head>
+
+<body class="bg-gray-950 font-serif text-gray-200"><div class="mx-auto max-w-3xl px-4 sm:px-6 xl:max-w-5xl xl:px-0 "><div class="flex h-screen flex-col justify-between"><header class="flex items-center justify-between py-10"><div><a href><div class="flex items-center justify-between"><div class=" h-6 text-2xl font-semibold sm:block text-primary-800">Bruuteuzius Blogged</div></div></a></div>
+    <div class="flex items-center space-x-4 leading-5 sm:space-x-6"><a href="" class="hidden font-medium text-gray-100 sm:block">Home
+                </a><a href="tags" class="hidden font-medium text-gray-100 sm:block">Tags
+                </a><a href="books" class="hidden font-medium text-gray-100 sm:block">Books
+                </a><a href="til" class="hidden font-medium text-gray-100 sm:block">TIL
+                </a><a href="https://github.com/bruuteuzius" class="hidden font-medium text-gray-100 sm:block">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="hover:text-primary-400 h-6 w-6 fill-current text-gray-200"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg></a><button id="toggle-button" aria-label="Toggle Menu" class="sm:hidden"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-8 w-8 text-gray-100"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg></button>
+        <div id="mobile-menu" class="fixed left-0 top-0 z-10 h-full w-full translate-x-full transform   duration-300 ease-in-out bg-gray-950 opacity-[0.98]"><div class="flex justify-end"><button id="close-mobile-menu-button" class="mr-8 mt-11 h-8 w-8" aria-label="Toggle Menu"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-gray-100"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></button></div>
+            <nav class="fixed mt-8 h-full"><div class="px-12 py-4"><a href="" class="text-2xl font-bold tracking-widest text-gray-100">Home
+                            </a></div><div class="px-12 py-4"><a href="tags" class="text-2xl font-bold tracking-widest text-gray-100">Tags
+                            </a></div><div class="px-12 py-4"><a href="books" class="text-2xl font-bold tracking-widest text-gray-100">Books
+                            </a></div><div class="px-12 py-4"><a href="til" class="text-2xl font-bold tracking-widest text-gray-100">TIL
+                            </a></div><div class="px-12 py-4"><a href="https://github.com/bruuteuzius" class="text-2xl font-bold tracking-widest text-gray-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="hover:text-primary-400 h-6 w-6 fill-current text-gray-200"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg></a></div></nav></div></div></header>
+<script>
+//👎 but what can I do? It's a static html. I can't use C# here.
+ const toggleMobileMenu = () => document.querySelector('#mobile-menu').classList.toggle('translate-x-full');
+ 
+ document.querySelector('#toggle-button').addEventListener('click', toggleMobileMenu);
+ document.querySelector('#close-mobile-menu-button').addEventListener('click', toggleMobileMenu);
+</script>
+        <center><img src="imgs/updated_wrong.png" width="80%"></center> 
+        
+        <main class="mb-auto"><article><div class="xl:divide-y  xl:divide-gray-700"><header class="pt-6 xl:pb-6"><div class="space-y-1 text-center"><dl class="space-y-10"><div><dt class="sr-only">Published on</dt>
+                        <dd class="text-base font-medium leading-6 text-gray-400"><time datetime="2026-03-07T00:00:00.000">March 7, 2026</time></dd></div></dl>
+                <div class="prose prose-invert mx-auto"><h1 class>Bacdafucup</h1></div></div></header>
+        <div class="grid-rows-[auto_1fr] divide-y  pb-8 divide-gray-700 xl:grid xl:grid-cols-4 xl:gap-x-6 xl:divide-y-0"><dl class="pb-10 pt-6 xl:border-b  xl:pt-11 xl:border-gray-700"><dt class="sr-only">Authors</dt>
+                <dd><ul class="flex flex-wrap justify-center gap-4 sm:space-x-12 xl:block xl:space-x-0 xl:space-y-8"><li class="flex items-center space-x-2"><dl class="whitespace-nowrap text-sm font-medium leading-5"><dt class="sr-only">Name</dt>
+                                        <dd class="text-gray-900 dark:text-gray-100 flex gap-1 items-center">bruuteuzius<a target="_blank" rel="noopener noreferrer" href="https://github.com/bruuteuzius" class="flex gap-1 items-center text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="hover:text-primary-400 w-4 h-4 fill-current text-gray-200"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg></a></dd></dl></li></ul></dd></dl>
+            <div class="divide-y  divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0"><div class="prose prose-invert max-w-none pb-8 pt-10"><h2 id="bacdafucup">Bacdafucup</h2>
+<p><em>Bacdafucup is een term die afkomstig is uit de hiphopcultuur en verwijst naar het maken van backups of het veiligstellen van gegevens. In de context van homelabs en technologie, betekent het simpelweg dat je regelmatig backups moet maken van je belangrijke bestanden, systemen en configuraties om te voorkomen dat je gegevens verliest bij een storing, hack of andere onvoorziene gebeurtenissen.</em></p>
+<p>...aldus de autocomplete (met AI?) in Jetbrains Rider, na het typen van &quot;bacdafucup&quot; in deze oorspronkele markdown file :)
+Maar het komt er wel redelijk in de buurt. Het is de titel van een album <a href="https://en.wikipedia.org/wiki/Bacdafucup">album</a> van ONYX.
+En dat je dingen moet backuppen is ook wel waar. Bacdafucup betekent volgens mij meer &quot;aan de kant gaan&quot; of zoals we in Twente zeggen &quot;vort du!&quot;.
+Enniehoe, deze blogpost gaat over backups maken. Ik heb nog geen idee wat ik allemaal moet of wil backuppen en hoe ik dat ga doen maar ik heb wel een paar ideeën.</p>
+<ol>
+<li>Ik wil sowieso die bootlading aan foto's die op de nasischijf staan backuppen.</li>
+<li>Op de nasischijf draaien een aantal applicaties, die databases hebben en wat configuratie, die wil ik denk ik ook niet kwijt.</li>
+<li>Ik heb een backups pool gemaakt waar ik dingen in bewaar.</li>
+</ol>
+<h2 id="fotos">Foto's</h2>
+<p>Voor foto's heb ik een pool gemaakt genaamd /pool/photos, daaronder heb ik datasets voor mijn vrouw en mezelf gemaakt.
+Bij elkaar dus 330GB op moment van typen.</p>
+<p><img src="Content/Blog/media/poolphotos.png" alt="" /></p>
+<p>Maar! Ik heb een immich docker draaien en die heeft alle foto's van mijn telefoon en die van mijn vrouw opgeslagen, dus die moet ook gebackupped. Hoe ga ik dat doen?
+Scheduled job die foto's van die folders in de photos pool kopieert en daarna de hele bups backuppen?
+Of een scheduled job die zowel photos pool backupped EN de immich folders (waar nieuwe foto's terechtkomen) ?
+En de database van immich dan? Moet ik die backuppen? Hey dat is handig, deze <a href="https://docs.immich.app/administration/backup-and-restore/">blogpost</a> beschrijft precies dat.
+De documentatie loopt een beetje achter, je kan de maintenance settings nu vinden onder rechtsbovenin op je avatar klikken, Administration en dan Settings.
+Er worden default iedere nacht rond 02:00 backups gemaakt van de database en standaard is de retentie 14 dagen.</p>
+<p><img src="Content/Blog/media/immich-db-backups.png" alt="" /></p>
+<p>Ook een mooi doelwit voor de backups dus!</p>
+<h2 id="applicaties">Applicaties</h2>
+<p>Er zijn een aantal applicaties waarvan ik mogelijk wel de backups wil :</p>
+<ol>
+<li>Home Assistant. Deze draait niet op de nasischijf, maar op een raspberry pi dus dat is een aparte uitdaging.</li>
+<li>Unifi Controller. Is een docker container op de nasischijf.</li>
+<li>Postgres DWH. Jawel, je leest het goed, ik heb een datawarehouse draaien. Met data uit home assistant voor sensoren en energie verbruik enzo.</li>
+<li>Mijn frigate server heeft een configuratie die ik misschien ook ergens moet opslaan. Misschien kan ik dat beter met een automatische commit naar github doen.</li>
+<li>De PC van mijn vrouw en mijn 2 laptops. Maar dat heb ik nog nooit nodig gehad. De foto's die mijn vrouw op haar pc heeft zijn wel belangrijk.</li>
+</ol>
+<h2 id="backups-data">Backups data</h2>
+<p>De /pool/backups moet natuurlijk ook gebackupped worden. Ik denk dat ik alle database en applicatie backups daarheen gooi om de zoveel tijd.
+Daarna moet die hele dataset ergens heen. Probleem is denk ik wel dat daar nu nog een hele verzameling games staat. Misschien moet die in een aparte dataset...
+Dat maakt de hele backup dataset denk ik ook wat kleiner. Nadat ik via de UI een nieuwe dataset heb gemaakt : /pool/games, kan ik moven :</p>
+<pre><code>sudo mv /pool/backups/Games/* /pool/games/
+</code></pre>
+<p>Okay, dat was wel een goed idee. Ik heb blijkbaar <code>280 GB</code> aan games, waardoor ik slechts <code>11,3 GB</code> over heb aan backups :)</p>
+<h2 id="backup-ideeen">Backup ideeën</h2>
+<p>Op dit moment kopieer ik 1x in de zoveel tijd (geen vaste planning) alle foto's naar een externe harde schijf.
+Dat doe ik met de plugin USB Backup in OpenMediaVault.
+Supersimpel, ik plug de disk er in, de disk wordt automatisch gemount, gekopieerd, en ge-unmount en daarna kan ik de disk er weer uit trekken.</p>
+<p>Het verdient geen schoonheidsprijs maar het is wel enigszins safe, want als ons huis affikt, dan hebben we in ieder geval de foto's nog veilig.
+Tenzij die USB stick nog bij ons thuis is. Maar die externe harde schijf ligt dus meestal bij mijn schoonmoeder.
+Niets ten nadele van mijn schoonmoeder, maar deze &quot;offsite backup&quot; is suboptimaal.</p>
+<p>Hoe dan? Online storage? Ik heb al proton mail voor mezelf a 3 euro in de maand met 15gb opslag. 10 euro voor 500gb, of een dup pakket voor 15 euro per maand voor 2 personen en 2TB opslag.
+Proton is misschien wel een idee voor mijn documenten zoals belastingpapieren et cetera... Of misschien configuraties. Want er Proton Drive heeft apps voor alle platformen.</p>
+<blockquote>
+<p><em>08-03-2026 ondertussen heb ik een hetzner storage box gehuurd, kijk <a href="https://www.hetzner.com/storage/storage-box/">deze</a> de BX11!</em></p>
+</blockquote>
+<p>Eerst is het van belang om SSH aan te zetten op Hetzner. Dat kan door naar je storage-box te gaan en onder <code>SSH Support</code> aan te klikken.
+Mijn storage-box heet Ultima Thule, naar deze <a href="https://en.wikipedia.org/wiki/Thule">wiki</a> pagina, maar vooral vanwege de backup-site van Bill in de <a href="https://bobiverse.fandom.com/wiki/Ultima_Thule">Bobiverse</a> boekenreeks.</p>
+<p>Eerst een ssh key maken:</p>
+<pre><code>ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519
+</code></pre>
+<p>Dan de key naar de storage box uploaden :</p>
+<pre><code>cat ~/.ssh/id_ed25519.pub | ssh -p 23 uXXXXXX@uXXXXXX.YOUR-STORAGEBOX.DE install-ssh-key
+</code></pre>
+<p>Okay nu hebben we dus toegang tot de strorage box, nu nog iets verzinnen hoe ik backups maak en hoe ik de data daar krijg...</p>
+<ol>
+<li>Alle bestanden per dataset (backups en photos) los naar Ultima Thule <strong>SCP-en</strong>. Dan moet ik een bash-script maken die ik kan schedulen met de cron-functie in OpenMediaVault.</li>
+<li>Misschien kan ik de ZFS snapshot functie gebruiken en via <strong>ZFS send/receive</strong> de data naar Ultima Thule sturen. Dat lijkt me wel een stuk eleganter, maar ik weet niet of dat mogelijk is met een storage box van Hetzner. Hetzner moet wel ZFS receive ondersteunen en dat betwijfel ik.</li>
+<li>Of ik maak lokaal een ZFS snapshot en sla die op als een bestand en <strong>rsync</strong> ik dat naar Ultima Thule.</li>
+<li>Of ik gebruik de ingebakken <strong>rsync</strong> service van <strong>OpenMediaVault</strong> om de inhoud van mijn backups en photos datasets te syncen.</li>
+<li>Iedereen heeft het over <strong>Duplicati</strong>?</li>
+</ol>
+<p>Eerst maak ik een dataset met een kleine hoeveelheid data, om met weinig data te testen hoe verschillende backups werken.
+Deze dataset geef ik de <code>pool/test</code> en daar gooi ik wat data in.</p>
+<p><img src="Content/Blog/media/testdataset.png" alt="" /></p>
+<p>Ongeveer 1 GB aan data, dat is een mooi testje. Niet dat ik echt marktplaats foto's en een website backup uit 2024 wil backuppen, maar ik wil een relatief kleine dataset die ik prima kwijt mag raken. Ik ken mezelf.</p>
+<h2 id="vscode">VSCode</h2>
+<p>Maar voordat ik ook maar iets kan gaan doen, ik word helemaal sjagrijnig van <em>nano</em> of <em>helix</em> of <em>vim</em> gebruiken in de terminal om mijn scripts te schrijven en te testen.
+Gelukkig heeft VSCode een handige plugin <em>Remote SSH</em>, waarmee ik dus direct in VSCode kan werken op mijn nasischijf.
+Wel even op de nasischijf <code>AllowTcpForwarding yes</code> toevoegen aan <code>/etc/ssh/sshd_config</code> en daarna de ssh service herstarten met <code>sudo systemctl restart ssh</code>.</p>
+<p><img src="Content/Blog/media/vscode-remote-ssh.png" alt="" /></p>
+<p><em>...inderdaad, <code>jemoeder.sh</code> is een soort &quot;ik probeer dingen uit&quot;-script, om te kijken of dat schedulen van omv wel werkt</em></p>
+<p>Voordeel is nu ook dat ik een LLM kan gebruiken in VSCode, zoals bijvoorbeeld CodeGPT, om me te helpen met het schrijven van de scripts.</p>
+<h3 id="scp">SCP</h3>
+<p>Wat is SCP en hoe werkt het? Als ik de man pages zo lees, kopieert het commando bestanden tussen hosts met SFTP. De parameters zijn vrij eenvoudig en ik denk ik dat ik de volgende nodig heb :</p>
+<pre><code>scp -P 23 -prTC -i &quot;$SSH_KEY&quot; &quot;$SOURCE_PATH&quot;/* &quot;$REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH&quot;
+</code></pre>
+<p>Nou SCP gaat niet bijster snel. 5 volle minuten voor 1 GB data.
+<img src="Content/Blog/media/scp.png" alt="" /></p>
+<h3 id="rsync">Rsync</h3>
+<p>Rsyncen is ook niet heel veel sneller (4 minuten voor 1 GB data) maar het is wel een stuk eleganter, want het kan ook alleen de verschillen tussen bestanden kopieren.</p>
+<pre><code>rsync -avz --progress --stats -e &quot;ssh -p 23 -i $SSH_KEY&quot; &quot;$SOURCE_PATH/&quot; &quot;$REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH&quot;
+</code></pre>
+<p><img src="Content/Blog/media/rsync-test.png" alt="" /></p>
+<h3 id="zfs-snapshots">ZFS snapshots</h3>
+<p>Hetzner heeft geen ZFS receive ondersteuning, dus dat gaat niet werken. Maar ik kan wel proberen lokaal in een tmp folder een .zfs snapshot neer te zetten en die te rsyncen naar Ultima Thule.</p>
+<p>Mijn eerste poging resulteerde in het maken van een snapshot, de inhoud daarvan inclusief attributen en ownsership naar Ultima Thule te rsyncen.
+Dat kwam neer op extra werk tmp folder maken, snapshot maken, inhoud van de snapshot daarheen clonen, dat vervolgens rsyncen.
+Dus feitelijk de vorige rsync poging :)
+Maar toen dacht ik : kan ik echt niet een ZFS send stream naar Ultima Thule via een ssh cat-en naar een .zfs bestand aldaar?</p>
+<pre><code>zfs send &quot;$dataset@$PREFIX&quot; | ssh -p 23 -i $SSH_KEY $HETZNER_USER@$HETZNER_HOST &quot;cat &gt; $HETZNER_PATH/$dataset/$PREFIX.zfs&quot;
+</code></pre>
+<p>Hij lijkt iets doen.... ik krijg een enorme berg met bagger over mn scherm gescrolled :</p>
+<p><img src="Content/Blog/media/zfs-send-stream.png" alt="" /></p>
+<p>Ok na meer dan 10 minuten geef ik dit op. Deze eindeloze stream lijkt niet te werken. Maar geef toe, het idee was leuk toch? Gotta love pipes.</p>
+<pre><code>zfs send &quot;$dataset@$PREFIX&quot; | ssh -p 23 -i $SSH_KEY $HETZNER_USER@$HETZNER_HOST &quot;cat &gt; $HETZNER_PATH/$dataset/$PREFIX.zfs&quot;
+</code></pre>
+<h3 id="duplicati">Duplicati?</h3>
+<p>Nadat ik de docker-compose van <a href="https://github.com/linuxserver/docker-duplicati">Duplicati</a> een klein beetje heb aangepast en toegevoegd aan mn docker-compose.tools.yml, kon ik vrij snel en eenvoudig een backup setje maken.
+Beetje rondklikken in de UI en ik had al vrij snel een backup van mn dockers en scripts uit de home folder naar mn <code>/pool/backups</code> dataset.</p>
+<p><img src="Content/Blog/media/duplicati.png" alt="" /></p>
+<p>Ik ga natuurlijk de (best goeie!) <a href="https://docs.duplicati.com/backup-destinations/destination-overview">documentatie</a> van Duplicati niet hier gaan herhalen, maar ik geloof wel dat ik naar Hetzner kan backuppen middels de SSH-optie.
+Er wordt ook netjes een password protected enkele file gemaakt van de backup, die ik vervolgens naar Ultima Thule zou kunnen rsyncen.</p>
+<p><img src="Content/Blog/media/duplicati-files.png" alt="" /></p>
+<p>Allemaal heel erg nois, maar toch bekruipt me een beetje het gevoel dat ik dan meteen heel erg vast zit aan duplicati. Kan ik die files openen/gebruiken zonder duplicati?
+Ja dat kan volgens de <a href="https://docs.duplicati.com/using-tools/encrypting-and-decrypting-files">docs</a>.
+Ok ik had gedacht dat dit een minpunt zou zijn dat het niet kon, maar kan dus wel.
+Dit is mooi voor backups van documenten enzo, maar ik denk dat het niet gaat werken voor mijn foto's en backup datasets.
+Ik wil namelijk niet meerdere kopieën van een set aan foto's meerdere malen op Ultima Thule hebben staan.</p>
+<h2 id="voorlopige-conclusie">Voorlopige conclusie</h2>
+<p>Volgens mij ben ik er uit. Ik ga voor simpele rsync vanaf mijn nasischijf naar Ultima Thule.
+Ik ga een script maken dat ik kan schedulen in OpenMediaVault, dat de inhoud van mijn photos en backups datasets rsynct naar Ultima Thule.
+Ik ga geen ZFS snapshots maken, want dat werkt niet met Hetzner, en ik ga ook geen duplicati gebruiken, want dat heb ik nu nog niet nodig. Voor documenten enzo. Mijn docker files kunnen in principe ook naar github of codeberg.
+Ik ga ook geen SCP gebruiken, want dat is niet sneller dan rsync en het is ook niet eleganter. SCP ondersteund geen file attributes behouden.</p>
+<p>Rsync is gewoon een solide tool die al mijn eisen voldoet en die ik ook al ken en gebruik. En heb gebruikt bij het migreren van bamischijf naar nasischijf :)
+Nu weet ik niet of ik deze blogpost nog ga bijwerken met de backupscripts en mijn bevindingen na een poosje, maar deze kan alvast online.</p>
+</div>
+                <div class="pb-6 pt-6 text-sm text-gray-300"><a target="_blank" rel="noopener noreferrer" href="https://github.com/bruuteuzius/tree/main/Content/Blog/bacdafucup">View on GitHub</a></div></div>
+            <footer><div class=" text-sm font-medium leading-5 divide-gray-700 xl:col-start-1 xl:row-start-2 xl:divide-y"><div class="py-4 xl:py-8"><h2 class="text-xs uppercase tracking-wide text-gray-400">Tags</h2>
+                        <div class="flex flex-wrap"><a class="text-primary-500 hover:text-primary-400 mr-3 text-sm font-medium uppercase" href="tags/homelab">homelab</a><a class="text-primary-500 hover:text-primary-400 mr-3 text-sm font-medium uppercase" href="tags/backup">backup</a></div></div></div>
+                <div class="pt-4 xl:pt-8"><a class="text-primary-500 hover:text-primary-400" aria-label="Back to the home" href>← Back to the home</a></div></footer></div></div></article></main>
+
+        <footer><div class="mt-16 flex flex-col items-center"><div class="mb-3 flex space-x-4"><a class="text-sm text-gray-500 transition hover:text-gray-600" target="_blank" rel="noopener noreferrer" href="https://github.com/bruuteuzius"><span class="sr-only">github</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="hover:text-primary-400 h-6 w-6 fill-current text-gray-200"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg></a></div>
+                <div class="mb-2 flex space-x-2 text-sm text-gray-400"><a target="_blank" rel="noopener noreferrer" href="https://github.com/BlazorStatic/BlazorStatic"> Built with Blazor Static</a>
+                    <div>•</div>
+                    <div>© 2026</div></div></div></footer></div></div>
+        <blazor-focus-on-navigate selector="h1"></blazor-focus-on-navigate></body></html>
