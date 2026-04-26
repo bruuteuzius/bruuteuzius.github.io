@@ -173,5 +173,73 @@ Ik ga ook geen SCP gebruiken, want dat is niet sneller dan rsync en het is ook n
 Rsync is gewoon een solide tool die al mijn eisen voldoet en die ik ook al ken en gebruik. En heb gebruikt bij het migreren van bamischijf naar nasischijf :)
 Nu weet ik niet of ik deze blogpost nog ga bijwerken met de backupscripts en mijn bevindingen na een poosje, maar deze kan alvast online.
 
+## Update 08-03-2026
+Ik heb een paar scripts gemaakt die ik kan schedulen in OpenMediaVault, die de inhoud van mijn photos en backups datasets rsynct naar Ultima Thule.
 
+Eerst had ik de /pool/photos/bjdiedering en /pool/photos/antoinet dataset los gersynct, maar ik kwam er achter dat 
+immich die niet meer bijwerkt, omdat die de foto's in een aparte folder zet, te weten `/pool/docker/immich/library/library/admin/` voor mijn immich account en `/pool/docker/immich/library/library/<guid>/` voor Antoinet.
+Dus na de eerst rsync heb ik die immich library folders ingesteld voor de backup. 
 
+In omv7 heb ik per immich user een scheduled job op andere tijdstippen, zodat ze mekaar niet in de weg kunnen zitten.
+![](media/scheduled_tasks.png)
+
+## Backups van databases
+Home Assistant heeft een mysql database en ik heb zelf een Datawarehouse draaien in een postgres database container.
+Voor mysql heb ik een apart script gemaakt die `mysqldump` gebruikt om een dump te maken van de database en in `/pool/backups/databases` te plaatsen.
+Hetzelfde heb ik voor postgres gedaan maar dan met `pg_dump`. Deze dumps worden ook opgeslagen in `/pool/backups/databases` 
+
+Ik check eerst of de connectie gemaakt kan worden:
+```bash
+echo "Testing connection to $HOST..."
+if ! mysql -h "$HOST" -u "$USERNAME" -p"$PASSWORD" -e "SELECT 1;" &> /dev/null; then
+    echo "Error: Cannot connect to database at $HOST with provided credentials"
+    exit 1
+fi
+```
+En dan maak ik de dump (en er omheen een if als het lukt een melding en anders dikke faal) :
+```bash
+mysqldump -h "$HOST" -u "$USERNAME" -p"$PASSWORD" "$DB_NAME" > "$BACKUP_FILE"; 
+```
+
+En voor postgres kijk ik of de container nog draait:
+```bash
+if ! docker ps --format "table {{.Names}}" | grep -q "^${CONTAINER_NAME}$"; then
+    echo "Error: Container '$CONTAINER_NAME' is not running"
+    exit 1
+fi
+```
+En dan de pg_dump:
+```bash
+docker exec "$CONTAINER_NAME" pg_dump -U "$USER" "$DB_NAME" > "$BACKUP_FILE"; 
+```
+
+Ook gebruik ik een functie om een retentie van 3 backups te houden:
+```bash
+cleanup_old_backups() {
+    local dir="$1"
+    local db_name="$2"
+    local keep_count=3
+    
+    file_count=$(ls -t "$dir/${db_name}_backup_"*.sql 2>/dev/null | wc -l)
+    if [ "$file_count" -gt "$keep_count" ]; then
+        echo "Found $file_count backups. Deleting old backups (keeping $keep_count)..."
+        ls -t "$dir/${db_name}_backup_"*.sql 2>/dev/null | tail -n +$((keep_count + 1)) | xargs -r rm -f
+        echo "Cleanup completed."
+    fi
+}
+```
+
+Om te testen had ik al 2 oudere backups van mijn datawarehouse (postgres) staan, dus na het draaien van het script 
+had ik netjes 3 backups staan, waarvan de nieuwste een paar minuten oud was en er nog maar 1 van de nog oudere backups
+was blijven staan: 
+
+![](media/retentie_3_stuks.png)
+
+Nu kan ik het main-script in omv7 schedulen, ik denk iedere week, en dan wordt dat automatisch opgepakt door
+de schedule die de `/pool/backups` dataset naar Ultima Thule rsynct :)
+
+## Grote blij!
+
+_Ondertussen op Ultima Thule..._
+
+![](media/ultima.png)
