@@ -168,6 +168,59 @@ Ik ga geen ZFS snapshots maken, want dat werkt niet met Hetzner, en ik ga ook ge
 Ik ga ook geen SCP gebruiken, want dat is niet sneller dan rsync en het is ook niet eleganter. SCP ondersteund geen file attributes behouden.</p>
 <p>Rsync is gewoon een solide tool die al mijn eisen voldoet en die ik ook al ken en gebruik. En heb gebruikt bij het migreren van bamischijf naar nasischijf :)
 Nu weet ik niet of ik deze blogpost nog ga bijwerken met de backupscripts en mijn bevindingen na een poosje, maar deze kan alvast online.</p>
+<h2 id="update-08-03-2026">Update 08-03-2026</h2>
+<p>Ik heb een paar scripts gemaakt die ik kan schedulen in OpenMediaVault, die de inhoud van mijn photos en backups datasets rsynct naar Ultima Thule.</p>
+<p>Eerst had ik de /pool/photos/bjdiedering en /pool/photos/antoinet dataset los gersynct, maar ik kwam er achter dat
+immich die niet meer bijwerkt, omdat die de foto's in een aparte folder zet, te weten <code>/pool/docker/immich/library/library/admin/</code> voor mijn immich account en <code>/pool/docker/immich/library/library/&lt;guid&gt;/</code> voor Antoinet.
+Dus na de eerst rsync heb ik die immich library folders ingesteld voor de backup.</p>
+<p>In omv7 heb ik per immich user een scheduled job op andere tijdstippen, zodat ze mekaar niet in de weg kunnen zitten.
+<img src="Content/Blog/media/scheduled_tasks.png" alt="" /></p>
+<h2 id="backups-van-databases">Backups van databases</h2>
+<p>Home Assistant heeft een mysql database en ik heb zelf een Datawarehouse draaien in een postgres database container.
+Voor mysql heb ik een apart script gemaakt die <code>mysqldump</code> gebruikt om een dump te maken van de database en in <code>/pool/backups/databases</code> te plaatsen.
+Hetzelfde heb ik voor postgres gedaan maar dan met <code>pg_dump</code>. Deze dumps worden ook opgeslagen in <code>/pool/backups/databases</code></p>
+<p>Ik check eerst of de connectie gemaakt kan worden:</p>
+<pre><code class="language-bash">echo &quot;Testing connection to $HOST...&quot;
+if ! mysql -h &quot;$HOST&quot; -u &quot;$USERNAME&quot; -p&quot;$PASSWORD&quot; -e &quot;SELECT 1;&quot; &amp;&gt; /dev/null; then
+    echo &quot;Error: Cannot connect to database at $HOST with provided credentials&quot;
+    exit 1
+fi
+</code></pre>
+<p>En dan maak ik de dump (en er omheen een if als het lukt een melding en anders dikke faal) :</p>
+<pre><code class="language-bash">mysqldump -h &quot;$HOST&quot; -u &quot;$USERNAME&quot; -p&quot;$PASSWORD&quot; &quot;$DB_NAME&quot; &gt; &quot;$BACKUP_FILE&quot;; 
+</code></pre>
+<p>En voor postgres kijk ik of de container nog draait:</p>
+<pre><code class="language-bash">if ! docker ps --format &quot;table {{.Names}}&quot; | grep -q &quot;^${CONTAINER_NAME}$&quot;; then
+    echo &quot;Error: Container '$CONTAINER_NAME' is not running&quot;
+    exit 1
+fi
+</code></pre>
+<p>En dan de pg_dump:</p>
+<pre><code class="language-bash">docker exec &quot;$CONTAINER_NAME&quot; pg_dump -U &quot;$USER&quot; &quot;$DB_NAME&quot; &gt; &quot;$BACKUP_FILE&quot;; 
+</code></pre>
+<p>Ook gebruik ik een functie om een retentie van 3 backups te houden:</p>
+<pre><code class="language-bash">cleanup_old_backups() {
+    local dir=&quot;$1&quot;
+    local db_name=&quot;$2&quot;
+    local keep_count=3
+    
+    file_count=$(ls -t &quot;$dir/${db_name}_backup_&quot;*.sql 2&gt;/dev/null | wc -l)
+    if [ &quot;$file_count&quot; -gt &quot;$keep_count&quot; ]; then
+        echo &quot;Found $file_count backups. Deleting old backups (keeping $keep_count)...&quot;
+        ls -t &quot;$dir/${db_name}_backup_&quot;*.sql 2&gt;/dev/null | tail -n +$((keep_count + 1)) | xargs -r rm -f
+        echo &quot;Cleanup completed.&quot;
+    fi
+}
+</code></pre>
+<p>Om te testen had ik al 2 oudere backups van mijn datawarehouse (postgres) staan, dus na het draaien van het script
+had ik netjes 3 backups staan, waarvan de nieuwste een paar minuten oud was en er nog maar 1 van de nog oudere backups
+was blijven staan:</p>
+<p><img src="Content/Blog/media/retentie_3_stuks.png" alt="" /></p>
+<p>Nu kan ik het main-script in omv7 schedulen, ik denk iedere week, en dan wordt dat automatisch opgepakt door
+de schedule die de <code>/pool/backups</code> dataset naar Ultima Thule rsynct :)</p>
+<h2 id="grote-blij">Grote blij!</h2>
+<p><em>Ondertussen op Ultima Thule...</em></p>
+<p><img src="Content/Blog/media/ultima.png" alt="" /></p>
 </div>
                 <div class="pb-6 pt-6 text-sm text-gray-300"><a target="_blank" rel="noopener noreferrer" href="https://github.com/bruuteuzius/tree/main/Content/Blog/bacdafucup">View on GitHub</a></div></div>
             <footer><div class=" text-sm font-medium leading-5 divide-gray-700 xl:col-start-1 xl:row-start-2 xl:divide-y"><div class="py-4 xl:py-8"><h2 class="text-xs uppercase tracking-wide text-gray-400">Tags</h2>
