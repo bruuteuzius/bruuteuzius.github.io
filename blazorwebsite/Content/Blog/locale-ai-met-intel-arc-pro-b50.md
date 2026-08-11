@@ -89,12 +89,17 @@ Check of Ollama op de nasischijf draait (misschien nog poort 11434 open zetten i
 ![](media/ollama-running.png)
 
 ## Ollama en home assistant
-Peuleschil, gewoon ![ollama integration](media/ollama.png) installeren en een model kiezen. Daarna in Home Assistant Settings, Voice Assistants, 1tje toevoegen en Ollama als conversation agent kiezen. Mijn collega heeft daar een mooie [blogpost](https://nickvanraaij.com/blog/ai-and-home-assistant) voor geschreven.
+Peuleschil, gewoon de ollama integration installeren en een model kiezen. 
+![](media/ollama.png)
+
+Daarna in Home Assistant Settings, Voice Assistants, 1tje toevoegen en Ollama als conversation agent kiezen. Mijn collega heeft daar een mooie [blogpost](https://nickvanraaij.com/blog/ai-and-home-assistant) voor geschreven.
 Ik dacht ik doe ook qwen2.5:3b, dan heb ik nog ruimte over en die is lekker snel op mijn GPU. Het resultaat is best ok! Ik had net het model geladen en stel mijn testvraag : 
-"Why is the sky blue?" Het duurde in totaal 4 seconden voordat ik een heel ![verhaal](media/ok-nabu.MOV) terugkreeg van Nabu... Niet slecht toch? Maar jeetje wat een tekst. En Engels. Nouwja de basis is er. 
+"Why is the sky blue?" Het duurde in totaal 4 seconden voordat ik een heel verhaal terugkreeg van Nabu... Niet slecht toch? Maar jeetje wat een tekst. En Engels. Nouwja de basis is er. 
+
+![](media/ok-nabu.MOV) 
 
 #### Kleine sidestep
-Als je zoals ik een server met een moederbord hebt met een videokaart (dus een GPU) dan kun je eventueel STT en TTS versnellen. Voor piper kun je een App (docker) op je raspberry pi installeren, maar ik heb hiervoor een docker-compose op mijn nasischijf gemaakt en opgespind : 
+Mijn nasischijf heeft natuurlijk een moederbord met een videokaart. Maar het is een server, die heeft geen videokaart nodig. Ga ik ook niet gebruiken want : KVM. Dus voor Piper (TTS) kan ik een App (docker) op de raspberry pi installeren, maar ik heb hiervoor een docker-compose op mijn nasischijf gemaakt en opgespind : 
 
 ```yaml
 services:
@@ -109,7 +114,7 @@ services:
     restart: unless-stopped
 ```
 
-Whisper in dezelfde docker-compose lukte me niet, omdat ik geen geschikte whisper docker compose kon vinden dus heb ik zelf maar een docker image geknutseld en die opgespinned : 
+Whisper (STT) in dezelfde docker-compose lukte me niet, omdat ik geen geschikte docker compose kon vinden, dus heb ik zelf maar een docker image geknutseld en die opgespind : 
 
 ```yaml
 services:
@@ -190,7 +195,7 @@ networks:
 
 Dit scheelt (uit ervaring) maar 1 seconde tegenover de Wyoming protocollen als App (docker container) op de Raspberry Pi zelf in Home Assistant installeert.
 
-Voor nu is dit eerst even genoeg geblogged. Later pas ik deze post aan voor de volgende onderwerpen, ik ga nu eerst een test-periode in.
+Voor nu is dit eerst even genoeg geblogged. Later pas ik deze post aan voor de volgende onderwerpen, ik ga nu eerst een test-periode in met een Engelstalige Nabu.
 
 ## Een ander wake-word
 
