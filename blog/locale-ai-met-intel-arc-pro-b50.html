@@ -110,11 +110,14 @@ te sjouwen als ik een aanpassing in de BIOS moet doen. Dus ik heb de NAS maar we
 <p>Check of Ollama op de nasischijf draait (misschien nog poort 11434 open zetten in <code>ufw</code>) :</p>
 <p><img src="Content/Blog/media/ollama-running.png" alt="" /></p>
 <h2 id="ollama-en-home-assistant">Ollama en home assistant</h2>
-<p>Peuleschil, gewoon <img src="Content/Blog/media/ollama.png" alt="ollama integration" /> installeren en een model kiezen. Daarna in Home Assistant Settings, Voice Assistants, 1tje toevoegen en Ollama als conversation agent kiezen. Mijn collega heeft daar een mooie <a href="https://nickvanraaij.com/blog/ai-and-home-assistant">blogpost</a> voor geschreven.
+<p>Peuleschil, gewoon de ollama integration installeren en een model kiezen.
+<img src="Content/Blog/media/ollama.png" alt="" /></p>
+<p>Daarna in Home Assistant Settings, Voice Assistants, 1tje toevoegen en Ollama als conversation agent kiezen. Mijn collega heeft daar een mooie <a href="https://nickvanraaij.com/blog/ai-and-home-assistant">blogpost</a> voor geschreven.
 Ik dacht ik doe ook qwen2.5:3b, dan heb ik nog ruimte over en die is lekker snel op mijn GPU. Het resultaat is best ok! Ik had net het model geladen en stel mijn testvraag :
-&quot;Why is the sky blue?&quot; Het duurde in totaal 4 seconden voordat ik een heel <img src="Content/Blog/media/ok-nabu.MOV" alt="verhaal" /> terugkreeg van Nabu... Niet slecht toch? Maar jeetje wat een tekst. En Engels. Nouwja de basis is er.</p>
+&quot;Why is the sky blue?&quot; Het duurde in totaal 4 seconden voordat ik een heel verhaal terugkreeg van Nabu... Niet slecht toch? Maar jeetje wat een tekst. En Engels. Nouwja de basis is er.</p>
+<p><img src="Content/Blog/media/ok-nabu.MOV" alt="" /></p>
 <h4 id="kleine-sidestep">Kleine sidestep</h4>
-<p>Als je zoals ik een server met een moederbord hebt met een videokaart (dus een GPU) dan kun je eventueel STT en TTS versnellen. Voor piper kun je een App (docker) op je raspberry pi installeren, maar ik heb hiervoor een docker-compose op mijn nasischijf gemaakt en opgespind :</p>
+<p>Mijn nasischijf heeft natuurlijk een moederbord met een videokaart. Maar het is een server, die heeft geen videokaart nodig. Ga ik ook niet gebruiken want : KVM. Dus voor Piper (TTS) kan ik een App (docker) op de raspberry pi installeren, maar ik heb hiervoor een docker-compose op mijn nasischijf gemaakt en opgespind :</p>
 <pre><code class="language-yaml">services:
   wyoming-piper-igpu:
     container_name: wyoming-piper-igpu
@@ -126,7 +129,7 @@ Ik dacht ik doe ook qwen2.5:3b, dan heb ik nog ruimte over en die is lekker snel
       - &quot;10200:10200&quot;
     restart: unless-stopped
 </code></pre>
-<p>Whisper in dezelfde docker-compose lukte me niet, omdat ik geen geschikte whisper docker compose kon vinden dus heb ik zelf maar een docker image geknutseld en die opgespinned :</p>
+<p>Whisper (STT) in dezelfde docker-compose lukte me niet, omdat ik geen geschikte docker compose kon vinden, dus heb ik zelf maar een docker image geknutseld en die opgespind :</p>
 <pre><code class="language-yaml">services:
   whisper-cpp:
     container_name: whisper-cpp-igpu
@@ -203,7 +206,7 @@ networks:
   whisper: {}
 </code></pre>
 <p>Dit scheelt (uit ervaring) maar 1 seconde tegenover de Wyoming protocollen als App (docker container) op de Raspberry Pi zelf in Home Assistant installeert.</p>
-<p>Voor nu is dit eerst even genoeg geblogged. Later pas ik deze post aan voor de volgende onderwerpen, ik ga nu eerst een test-periode in.</p>
+<p>Voor nu is dit eerst even genoeg geblogged. Later pas ik deze post aan voor de volgende onderwerpen, ik ga nu eerst een test-periode in met een Engelstalige Nabu.</p>
 <h2 id="een-ander-wake-word">Een ander wake-word</h2>
 <h2 id="nederlands-model-zoekenaanpassen">Nederlands model zoeken/aanpassen</h2>
 <h2 id="model-aanpassen-voor-twents">Model aanpassen voor Twents</h2>
