@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/">
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+
+                    colors: {
+                        primary: tailwind.colors.blue
+                    },
+                },},
+                }
+    </script>
+
+
+    </head>
+
+<body class="bg-gray-950 font-serif text-gray-200"><div class="mx-auto max-w-3xl px-4 sm:px-6 xl:max-w-5xl xl:px-0 "><div class="flex h-screen flex-col justify-between"><header class="flex items-center justify-between py-10"><div><a href><div class="flex items-center justify-between"><div class=" h-6 text-2xl font-semibold sm:block text-primary-800">Bruuteuzius Blogged</div></div></a></div>
+    <div class="flex items-center space-x-4 leading-5 sm:space-x-6"><a href="" class="hidden font-medium text-gray-100 sm:block">Home
+                </a><a href="tags" class="hidden font-medium text-gray-100 sm:block">Tags
+                </a><a href="books" class="hidden font-medium text-gray-100 sm:block">Books
+                </a><a href="til" class="hidden font-medium text-gray-100 sm:block">TIL
+                </a><a href="https://github.com/bruuteuzius" class="hidden font-medium text-gray-100 sm:block">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="hover:text-primary-400 h-6 w-6 fill-current text-gray-200"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg></a><button id="toggle-button" aria-label="Toggle Menu" class="sm:hidden"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-8 w-8 text-gray-100"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg></button>
+        <div id="mobile-menu" class="fixed left-0 top-0 z-10 h-full w-full translate-x-full transform   duration-300 ease-in-out bg-gray-950 opacity-[0.98]"><div class="flex justify-end"><button id="close-mobile-menu-button" class="mr-8 mt-11 h-8 w-8" aria-label="Toggle Menu"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-gray-100"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></button></div>
+            <nav class="fixed mt-8 h-full"><div class="px-12 py-4"><a href="" class="text-2xl font-bold tracking-widest text-gray-100">Home
+                            </a></div><div class="px-12 py-4"><a href="tags" class="text-2xl font-bold tracking-widest text-gray-100">Tags
+                            </a></div><div class="px-12 py-4"><a href="books" class="text-2xl font-bold tracking-widest text-gray-100">Books
+                            </a></div><div class="px-12 py-4"><a href="til" class="text-2xl font-bold tracking-widest text-gray-100">TIL
+                            </a></div><div class="px-12 py-4"><a href="https://github.com/bruuteuzius" class="text-2xl font-bold tracking-widest text-gray-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="hover:text-primary-400 h-6 w-6 fill-current text-gray-200"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg></a></div></nav></div></div></header>
+<script>
+//👎 but what can I do? It's a static html. I can't use C# here.
+ const toggleMobileMenu = () => document.querySelector('#mobile-menu').classList.toggle('translate-x-full');
+ 
+ document.querySelector('#toggle-button').addEventListener('click', toggleMobileMenu);
+ document.querySelector('#close-mobile-menu-button').addEventListener('click', toggleMobileMenu);
+</script>
+        <center><img src="imgs/updated_wrong.png" width="80%"></center> 
+        
+        <main class="mb-auto"><article><div class="xl:divide-y  xl:divide-gray-700"><header class="pt-6 xl:pb-6"><div class="space-y-1 text-center"><dl class="space-y-10"><div><dt class="sr-only">Published on</dt>
+                        <dd class="text-base font-medium leading-6 text-gray-400"><time datetime="2026-05-25T00:00:00.000">May 25, 2026</time></dd></div></dl>
+                <div class="prose prose-invert mx-auto"><h1 class>Betsy</h1></div></div></header>
+        <div class="grid-rows-[auto_1fr] divide-y  pb-8 divide-gray-700 xl:grid xl:grid-cols-4 xl:gap-x-6 xl:divide-y-0"><dl class="pb-10 pt-6 xl:border-b  xl:pt-11 xl:border-gray-700"><dt class="sr-only">Authors</dt>
+                <dd><ul class="flex flex-wrap justify-center gap-4 sm:space-x-12 xl:block xl:space-x-0 xl:space-y-8"><li class="flex items-center space-x-2"><dl class="whitespace-nowrap text-sm font-medium leading-5"><dt class="sr-only">Name</dt>
+                                        <dd class="text-gray-900 dark:text-gray-100 flex gap-1 items-center">bruuteuzius<a target="_blank" rel="noopener noreferrer" href="https://github.com/bruuteuzius" class="flex gap-1 items-center text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="hover:text-primary-400 w-4 h-4 fill-current text-gray-200"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg></a></dd></dl></li></ul></dd></dl>
+            <div class="divide-y  divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0"><div class="prose prose-invert max-w-none pb-8 pt-10"><h2 id="wat-waarom">Wat? Waarom?!</h2>
+<p>We hebben nu al een tijdje een spraak assistent in huis, in de vorm van <a href="https://www.home-assistant.io/voice-pe/">Home Assistant Voice Preview</a>.
+Werkt als een tierelier, maar het is wel allemaal Engelstalig. Ik heb een paar automations gemaakt die getriggered worden door bepaalde zinnen.
+Subobtimaal maar het werkt. De basis dingen zoals een timer zetten, lampen uit of aan doen werkt allemaal prima, maar ik wil meer.
+En ik heb er ook nog geen LLM aan gekoppeld, dus ik kan er ook geen gesprekken mee voeren of vragen aan stellen.
+&quot;Okay Nabu&quot; vind ik ook niet echt een toffe wake-word. <a href="https://bobiverse.fandom.com/wiki/GUPPI">GUPPI</a> is geen optie want te nerdy. &quot;Hey Jarvis&quot; heeft iedereen al en ik heb nooit Doctor Who gekeken.</p>
+<p>Mijn wens is: Het huis smart-home opdrachten geven in het Twents, of in ieder geval in het Nederlands.</p>
+<p>Wat moet er gebeuren?</p>
+<ul>
+<li>Een LLM draaien op een server in huis, zodat ik niet afhankelijk ben van externe API's.</li>
+<li>Waarschijnlijk Ollama of llama.cpp gebruiken om aan Home Assistant te koppelen.</li>
+<li>Een wake-word instellen dat ik leuk vind.</li>
+<li>Een model vinden dat goed Nederlands kan, enigszins snel is en in de VRAM van de GPU past.</li>
+<li>Dat model aanpassen en/of Twents voeren?</li>
+</ul>
+<h2 id="llm-draaien-op-een-server-in-huis">LLM draaien op een server in huis</h2>
+<h3 id="de-hardware">De hardware</h3>
+<h4 id="de-server">De server</h4>
+<p>Ik heb al een nasischijf (zie eerder <a href="blog/project-bamischijf-2">blog</a>). Dat was een Jonsbo N2, maar ik had me bedacht dat daar geen normale videokaart
+in kan. Dan zou ik een low-profile kaart nodig hebben. Dus ik heb een Jonsbo N3 gekocht en de N2 verkocht aan een enthousiaste
+zelfbouwer. De N3 heeft ruimte voor 2 PCI kaarten met normaal formaat. Of een videokaart die 2 slotplates in beslag neemt :)</p>
+<h4 id="de-videokaart">De videokaart</h4>
+<p>Na lang zoeken heb ik uiteindelijk een <a href="https://tweakers.net/pricewatch/2283478/intel-arc-pro-b50.html">Intel Arc B50</a> gekocht toen die redelijk mee viel
+qua prijs. Alles overzetten was een gedoe. Het leek wel een open hart operatie :</p>
+<p><img src="Content/Blog/media/jonsbo-n2-naar-n3.png" alt="" /></p>
+<p>Maar uiteindelijk draait alles weer. Het enige probleem is: de kaart krijg ik nog niet aan de praat.
+De drivers zijn nog niet helemaal up-to-date met debian 13 en ik moet in de BIOS nog BAR aanzetten.
+Daarvoor heb ik de NAS een keer afgesloten, mee naar zolder genomen (waar monitor, toetsenbord en muis staan)
+en geprobeerd de BIOS te benaderen. Maar dat lukte niet omdat de Intel Arc nu natuurlijk de main GPU is, maar ik heb geen
+hdmi naar mini-dp kabel. En ik heb eerlijk gezegd ook geen zin meer om de boel steeds compleet af te sluiten en naar boven
+te sjouwen als ik een aanpassing in de BIOS moet doen. Dus ik heb de NAS maar weer teruggezet boven de meterkast.</p>
+<h4 id="een-kvm">Een KVM</h4>
+<p>Na wat zoekwerk heb ik dit apparaatje gekocht: <a href="https://www.amazon.nl/dp/B0FRFWR5PM?ref_=pe_151259371_1319653121_t_fed_asin_title">Luckfox pico kvm</a></p>
+<p><img src="Content/Blog/media/pico2.png" alt="" /></p>
+<p>Nu kan ik eindelijk bij de BIOS. Ik heb de BAR gezet en een reboot gedaan. Op afstand! Hoe vet.</p>
+<p><img src="Content/Blog/media/bar.png" alt="" /></p>
+<h3 id="de-software">De software</h3>
+<h4 id="docker">Docker</h4>
+<p>Ik heb ervoor gekozen om ollama in een docker container te draaien. Mijn setup is geen fancy kubernetes oid, maar gewoon een paar docker compose files in de home folder. De docker-data staat in een filesystem.</p>
+<pre><code class="language-yaml">services:
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    restart: unless-stopped
+    ports:
+      - &quot;11434:11434&quot;
+    volumes:
+      - /pool/models:/root/.ollama
+    environment:
+      - OLLAMA_INTEL_GPU=ON
+      - OLLAMA_CONTEXT_LENGTH=65536
+      - ONEAPI_DEVICE_SELECTOR=offed:gpu
+      - LD_LIBRARY_PATH=/opt/intel/oneapi/tcm/1.5/lib:/opt/intel/oneapi/umf/1.1/lib:/opt/intel/oneapi/tcm/1.5/env/../lib:/opt/intel/oneapi/tbb/2023.1/env/../lib/intel64/gcc4.8:/opt/intel/oneapi/mkl/2026.1/lib:/opt/intel/oneapi/debugger/2026.1/opt/debugger/lib:/opt/intel/oneapi/compiler/2026.1/opt/compiler/lib:/usr/lib/x86_64-linux-gnu
+      - OLLAMA_HOST=0.0.0.0:11434
+    devices:
+      - /dev/dri:/dev/dri 
+    network_mode: &quot;host&quot;
+</code></pre>
+<p>Dat lijpe library path is om de drivers van de openapi GPU te kunnen gebruiken.</p>
+<p>Een <code>docker compose up</code> en in de container een model pullen en klaar is kees : <code>docker exec -it ollama ollama run qwen3.5</code></p>
+<p>Check of Ollama op de nasischijf draait (misschien nog poort 11434 open zetten in <code>ufw</code>) :</p>
+<p><img src="Content/Blog/media/ollama-running.png" alt="" /></p>
+<h2 id="ollama-en-home-assistant">Ollama en home assistant</h2>
+<p>Peuleschil, gewoon <img src="Content/Blog/media/ollama.png" alt="ollama integration" /> installeren en een model kiezen. Daarna in Home Assistant Settings, Voice Assistants, 1tje toevoegen en Ollama als conversation agent kiezen. Mijn collega heeft daar een mooie <a href="https://nickvanraaij.com/blog/ai-and-home-assistant">blogpost</a> voor geschreven.
+Ik dacht ik doe ook qwen2.5:3b, dan heb ik nog ruimte over en die is lekker snel op mijn GPU. Het resultaat is best ok! Ik had net het model geladen en stel mijn testvraag :
+&quot;Why is the sky blue?&quot; Het duurde in totaal 4 seconden voordat ik een heel <img src="Content/Blog/media/ok-nabu.MOV" alt="verhaal" /> terugkreeg van Nabu... Niet slecht toch? Maar jeetje wat een tekst. En Engels. Nouwja de basis is er.</p>
+<h4 id="kleine-sidestep">Kleine sidestep</h4>
+<p>Als je zoals ik een server met een moederbord hebt met een videokaart (dus een GPU) dan kun je eventueel STT en TTS versnellen. Voor piper kun je een App (docker) op je raspberry pi installeren, maar ik heb hiervoor een docker-compose op mijn nasischijf gemaakt en opgespind :</p>
+<pre><code class="language-yaml">services:
+  wyoming-piper-igpu:
+    container_name: wyoming-piper-igpu
+    image: rhasspy/wyoming-piper
+    command: --voice en_US-hfc_female-medium
+    volumes:
+      - ${DOCKER}/piper-data:/data
+    ports:
+      - &quot;10200:10200&quot;
+    restart: unless-stopped
+</code></pre>
+<p>Whisper in dezelfde docker-compose lukte me niet, omdat ik geen geschikte whisper docker compose kon vinden dus heb ik zelf maar een docker image geknutseld en die opgespinned :</p>
+<pre><code class="language-yaml">services:
+  whisper-cpp:
+    container_name: whisper-cpp-igpu
+    build:
+      context: ./whisper-cpp
+      args:
+        - WHISPER_CPP_VERSION=1.7.4
+        - BUILD_FROM=intel/oneapi:2025.0.1-0-devel-ubuntu24.04
+    restart: unless-stopped
+    depends_on:
+      model-download:
+        condition: service_completed_successfully
+    # Change user to the one that will run the container
+    user: 1000:100
+    group_add:
+      # Change this number to match your &quot;render&quot; host group id
+      # You can get the id number by running: getent group render
+      - &quot;105&quot;
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - type: bind
+      # Please change /path/to/models to a real directory the user the service is running as can read and write to
+      # Make sure to do the same for model-download service too
+        source: /pool/docker/whisper-models
+        target: /models
+    networks:
+      whisper: {}
+    hostname: whispercpp
+    devices:
+      - /dev/dri:/dev/dri
+    environment:
+      - SYCL_CACHE_PERSISTENT=1
+      - SYCL_CACHE_DIR=/models/sycl_cache
+      - SYCL_DEVICE_ALLOWLIST=BackendName:level_zero
+    command: build/bin/whisper-server -l ${WHISPER_LANG} -bs ${WHISPER_BEAM_SIZE} -m /models/ggml-${WHISPER_MODEL}.bin --host 0.0.0.0 --port 8910 --suppress-nst --prompt &quot;${WHISPER_PROMPT}&quot;
+  wyoming-api:
+    container_name: wyoming-api-igpu
+    build:
+      context: ./wyoming-api
+      args:
+        - BUILD_FROM=debian:bookworm-slim
+    restart: unless-stopped
+    depends_on:
+      whisper-cpp:
+        condition: service_started
+    security_opt:
+      - no-new-privileges:true
+    # Change user to the one that will run the container
+    user: 1000:100
+    networks:
+      whisper: {}
+    ports:
+      - 7891:7891
+    command: script/run --uri tcp://0.0.0.0:7891 --api http://whispercpp:8910/inference
+  model-download:
+    security_opt:
+      - no-new-privileges:true
+    user: 1000:100
+    build:
+      context: ./model-download
+    volumes:
+      - type: bind
+      # Please change /path/to/models to a real directory the user the service is running as can read and write to
+      # Make sure to do the same for whisper-cpp service too
+        source: /pool/docker/whisper-models
+        target: /models
+    restart: no
+    networks:
+      whisper: {}
+    environment:
+      - MODEL=${WHISPER_MODEL}
+networks:
+  whisper: {}
+</code></pre>
+<p>Dit scheelt (uit ervaring) maar 1 seconde tegenover de Wyoming protocollen als App (docker container) op de Raspberry Pi zelf in Home Assistant installeert.</p>
+<p>Voor nu is dit eerst even genoeg geblogged. Later pas ik deze post aan voor de volgende onderwerpen, ik ga nu eerst een test-periode in.</p>
+<h2 id="een-ander-wake-word">Een ander wake-word</h2>
+<h2 id="nederlands-model-zoekenaanpassen">Nederlands model zoeken/aanpassen</h2>
+<h2 id="model-aanpassen-voor-twents">Model aanpassen voor Twents</h2>
+</div>
+                <div class="pb-6 pt-6 text-sm text-gray-300"><a target="_blank" rel="noopener noreferrer" href="https://github.com/bruuteuzius/tree/main/Content/Blog/locale-ai-met-intel-arc-pro-b50">View on GitHub</a></div></div>
+            <footer><div class=" text-sm font-medium leading-5 divide-gray-700 xl:col-start-1 xl:row-start-2 xl:divide-y"><div class="py-4 xl:py-8"><h2 class="text-xs uppercase tracking-wide text-gray-400">Tags</h2>
+                        <div class="flex flex-wrap"><a class="text-primary-500 hover:text-primary-400 mr-3 text-sm font-medium uppercase" href="tags/homelab">homelab</a><a class="text-primary-500 hover:text-primary-400 mr-3 text-sm font-medium uppercase" href="tags/llm">llm</a><a class="text-primary-500 hover:text-primary-400 mr-3 text-sm font-medium uppercase" href="tags/ollama">ollama</a><a class="text-primary-500 hover:text-primary-400 mr-3 text-sm font-medium uppercase" href="tags/home-assistant">home-assistant</a></div></div></div>
+                <div class="pt-4 xl:pt-8"><a class="text-primary-500 hover:text-primary-400" aria-label="Back to the home" href>← Back to the home</a></div></footer></div></div></article></main>
+
+        <footer><div class="mt-16 flex flex-col items-center"><div class="mb-3 flex space-x-4"><a class="text-sm text-gray-500 transition hover:text-gray-600" target="_blank" rel="noopener noreferrer" href="https://github.com/bruuteuzius"><span class="sr-only">github</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="hover:text-primary-400 h-6 w-6 fill-current text-gray-200"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg></a></div>
+                <div class="mb-2 flex space-x-2 text-sm text-gray-400"><a target="_blank" rel="noopener noreferrer" href="https://github.com/BlazorStatic/BlazorStatic"> Built with Blazor Static</a>
+                    <div>•</div>
+                    <div>© 2026</div></div></div></footer></div></div>
+        <blazor-focus-on-navigate selector="h1"></blazor-focus-on-navigate></body></html>
