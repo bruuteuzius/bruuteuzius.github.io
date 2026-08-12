@@ -162,3 +162,8 @@
 > 07-03-2026 - Notificaties op OMV met Proton Mail in combinatie met je eigen domeinnaam? Supersimpel: https://proton.me/support/custom-domain
 
 > 07-03-2026 - stuk tekst op je iphone kopiëren dan kun je die plakken in je macbook! OMG! 
+
+> 16-06-2026 - als ik toch perse iets in de frontend moet doen en er is npm : doe eerst een `npm ci` voordat je `ng build` gaat doen.
+
+> 04-08-2026 - `git status` geeft niet alle gewijzigde files weer, maar `git status -u` sowieso wel
+
